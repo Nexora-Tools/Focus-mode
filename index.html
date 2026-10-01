@@ -3,97 +3,222 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080914">
+<meta name="theme-color" content="#050a12">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Focus Mode</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#080914;color:#f5f5fa;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-.app{max-width:460px;margin:auto;min-height:100vh;padding:22px 16px 90px}.top{display:flex;justify-content:space-between;align-items:center}
-h1{font-size:25px;margin:0;font-weight:800}.sub{color:#8d90a5;font-size:12px;margin-top:3px}
-.card{background:#101222;border:1px solid #20243b;border-radius:22px;padding:20px;margin-top:18px;box-shadow:0 10px 35px #0005}
-.ring{width:210px;height:210px;border-radius:50%;margin:12px auto 18px;background:conic-gradient(#ff304f var(--p,0%),#25283c 0);display:grid;place-items:center}
-.ring:after{content:"";width:178px;height:178px;border-radius:50%;background:#101222;position:absolute}
-.ringin{position:relative;z-index:1;text-align:center}.day{font-size:40px;font-weight:900}.muted{color:#8d90a5}
-.btn{width:100%;border:0;border-radius:16px;padding:15px;font-weight:800;font-size:15px;background:#ff304f;color:white;margin-top:12px}.btn.secondary{background:#1b1e30}.btn.warn{background:#b91431}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{background:#171a2b;border-radius:14px;padding:12px 5px;text-align:center}.stat b{display:block;font-size:17px}.stat span{font-size:10px;color:#8d90a5}
-nav{position:fixed;bottom:0;left:0;right:0;background:#0c0e1b;border-top:1px solid #20243b;display:flex;justify-content:center;z-index:20}nav button{background:none;border:0;color:#85899f;padding:14px 20px;font-weight:700}nav button.active{color:#ff405b}
-.page{display:none}.page.active{display:block}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.toggle{width:48px;height:28px;border-radius:20px;background:#303449;position:relative;border:0}.toggle.on{background:#ff304f}.toggle:after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:white;top:3px;left:3px;transition:.2s}.toggle.on:after{left:23px}
-input{width:100%;background:#171a2b;color:#fff;border:1px solid #30344c;border-radius:12px;padding:12px;margin-top:8px}
-.pop{position:fixed;z-index:50;padding:12px 16px;border-radius:14px;background:#ff304f;color:#fff;font-weight:900;box-shadow:0 8px 25px #0008;animation:float 4s linear forwards;pointer-events:none}
-@keyframes float{0%{transform:translateY(30px);opacity:0}15%,75%{opacity:1}100%{transform:translateY(-90px);opacity:0}}
-.overlay{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:22px;z-index:40}.modal{max-width:420px;width:100%;background:#111426;border:1px solid #343851;border-radius:24px;padding:24px;text-align:center}
-textarea{width:100%;min-height:130px;background:#171a2b;color:white;border:1px solid #30344c;border-radius:12px;padding:12px}
+:root{
+ --bg:#050a12;--panel:#0b1420eF;--panel2:#101c2a;--line:#243448;
+ --text:#f7f9ff;--muted:#8997aa;--red:#ff334d;--red2:#ff596d;
+ --purple:#8b5cff;--blue:#3d8bff;--green:#20d99a;--gold:#ffbf3f;
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050a12}
+body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);overflow-x:hidden}
+button,input{font:inherit}
+.app{width:min(100%,480px);min-height:100vh;margin:auto;position:relative;padding:18px 15px calc(88px + env(safe-area-inset-bottom));background:
+ radial-gradient(circle at 50% 15%,#1d304533,transparent 34%),
+ linear-gradient(180deg,#07101a 0,#050a12 55%,#03070d 100%)}
+.app:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.3;background:
+ radial-gradient(circle at 20% 20%,#8b5cff18 0 2px,transparent 3px),
+ radial-gradient(circle at 75% 30%,#3d8bff15 0 2px,transparent 3px),
+ radial-gradient(circle at 45% 70%,#ff334d12 0 2px,transparent 3px);background-size:110px 130px}
+.page{display:none}.page.active{display:block;animation:pageIn .22s ease}
+@keyframes pageIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;height:57px}
+.top-left,.top-right{display:flex;align-items:center;gap:12px}
+.menu,.gear{width:38px;height:38px;border:0;background:transparent;color:#e8edf6;font-size:23px;display:grid;place-items:center}
+.brand-wrap{text-align:center;line-height:1}.crown{font-size:19px;color:var(--gold);filter:drop-shadow(0 0 8px #ffbf3f88)}.brand{font-size:20px;font-weight:950;letter-spacing:.4px;margin-top:2px}.tagline{font-size:8px;letter-spacing:1.5px;color:#8793a7;margin-top:5px}
+
+.hero{position:relative;overflow:hidden;border:1px solid #26394d;border-radius:25px;min-height:570px;padding:17px 13px 14px;background:
+ linear-gradient(180deg,#07101aee 0%,#07101a66 25%,#050a12f5 63%,#050a12 100%),
+ radial-gradient(circle at 76% 24%,#3266a455 0 7%,transparent 24%),
+ radial-gradient(circle at 25% 37%,#ff334d20 0 5%,transparent 26%),
+ linear-gradient(135deg,#0b1b2a,#11101c 55%,#060a11);
+ box-shadow:0 18px 55px #000b}
+.hero:after{content:"";position:absolute;left:-10%;right:-10%;top:0;height:42%;background:linear-gradient(180deg,#0a1828aa,transparent);pointer-events:none}
+.hero-content{position:relative;z-index:2}
+.hero-art{height:105px;position:absolute;left:0;right:0;top:45px;opacity:.8;pointer-events:none}
+.hero-art:before{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:28px;top:-8px;background:radial-gradient(circle,#83c7ff66,#21466c33 45%,transparent 70%);box-shadow:0 0 50px #4d9ee855}
+.hero-art:after{content:"";position:absolute;left:42%;top:28px;width:74px;height:74px;border-radius:48% 48% 20% 20%;background:linear-gradient(135deg,#101724,#02050a);transform:rotate(-13deg);box-shadow:18px 8px 0 #111a27,-14px 25px 0 #0a111b}
+
+.date-line{display:flex;justify-content:space-between;align-items:center;color:#9ba8b8;font-size:9px;margin:8px 5px 0}
+.date-line b{color:#fff;font-size:10px}.date-pill{padding:6px 8px;border-radius:8px;background:#0e1926b5;border:1px solid #27394d}
+
+.ring-wrap{position:relative;width:222px;height:222px;margin:19px auto 13px}
+.ring{position:absolute;inset:0;border-radius:50%;padding:10px;background:conic-gradient(from 0deg,var(--red) var(--p,0%),#273345 0);box-shadow:0 0 28px #ff334d44,0 0 70px #ff334d14}
+.ring:before{content:"";position:absolute;inset:5px;border-radius:50%;border:1px solid #ff718055}
+.ring:after{content:"";display:block;width:100%;height:100%;border-radius:50%;background:#08101b}
+.ring-center{position:absolute;inset:10px;display:grid;place-items:center;text-align:center;z-index:2}
+.fire{font-size:22px;filter:drop-shadow(0 0 8px #ff5a32)}.day-small{font-size:14px;color:#d5dbe5;margin-top:4px}.day{font-size:49px;line-height:1;font-weight:950;letter-spacing:-2px}.keep{font-size:15px;font-weight:900;margin-top:8px}.discipline{font-size:9px;color:#8997aa;margin-top:5px}
+
+.start-panel{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:6px 0 8px}
+.start-box{background:#0d1825dd;border:1px solid #26394d;border-radius:13px;padding:10px 9px;min-height:61px}
+.start-box .label{font-size:9px;color:#aab5c4}.start-box .value{font-size:11px;font-weight:800;margin-top:4px}.start-box .sub{font-size:8px;color:#758397;margin-top:2px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.mini{border:1px solid #26394d;border-radius:13px;padding:11px 3px;text-align:center;background:linear-gradient(180deg,#101c2a,#0a131f)}.mini .ico{font-size:15px}.mini strong{display:block;font-size:17px;margin-top:5px}.mini span{font-size:7px;color:#8997aa;letter-spacing:.7px}
+.urge{margin-top:10px;position:relative;overflow:hidden;background:linear-gradient(135deg,#ff334d,#e41e3e);border:1px solid #ff7180;border-radius:15px;color:#fff;padding:13px 10px;font-size:13px;font-weight:950;box-shadow:0 12px 30px #ff334d30}.urge:after{content:"";position:absolute;top:0;bottom:0;width:50px;background:#ffffff15;transform:skewX(-20deg);animation:shine 3.2s infinite}@keyframes shine{0%{left:-80px}55%,100%{left:120%}}
+.setdate{margin-top:7px;background:#0f1a27;border:1px solid #26394d;border-radius:13px;color:#dfe5ee;width:100%;padding:11px;font-size:10px;font-weight:850}
+
+.bottom{position:fixed;z-index:30;left:50%;bottom:0;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(4,1fr);background:#050a12f2;backdrop-filter:blur(18px);border-top:1px solid #203044;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+.bottom button{border:0;background:transparent;color:#738296;font-size:9px;font-weight:800;padding:3px}.bottom button span{display:block;font-size:20px;margin-bottom:3px}.bottom button.active{color:#ff3e56}.bottom button.active span{filter:drop-shadow(0 0 7px #ff334d)}
+
+.titlebar{display:flex;align-items:center;justify-content:space-between;margin:10px 4px 15px}.title-icon{font-size:22px}.title{font-size:19px;font-weight:950}.title-sub{font-size:9px;color:#8290a3;margin-top:3px}.screen-card{border:1px solid #26394d;border-radius:18px;background:linear-gradient(145deg,#0e1926,#09111b);padding:14px;margin-bottom:10px;box-shadow:0 10px 30px #0005}
+.current{border-color:#5e2840;background:linear-gradient(135deg,#261426,#121424 58%,#17102b)}.current-top{display:flex;align-items:center;justify-content:space-between}.current-name{font-size:10px;color:#ff91a0}.current-value{font-size:23px;font-weight:950;margin-top:3px}.current-note{font-size:9px;color:#a3adbb;margin-top:4px}
+.stat2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.smallstat{border:1px solid #26394d;border-radius:16px;padding:14px;background:#0b1622;text-align:center}.smallstat .icon{font-size:22px}.smallstat b{display:block;font-size:15px;margin-top:5px}.smallstat p{font-size:8px;color:#77869a;margin:4px 0 0}
+.calendar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.calendar-head b{font-size:11px}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.cal div{height:28px;border-radius:7px;display:grid;place-items:center;font-size:8px;color:#8390a2;background:#0d1824;border:1px solid #172637}.cal .done{color:#35e3aa;border-color:#1c705a;background:#09251e}.cal .today{background:#ff334d;color:#fff;border-color:#ff7180}.cal .selected{box-shadow:0 0 0 1px #ff334d inset}
+
+.tip-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px}.tip-tabs button{border:1px solid #26394d;border-radius:12px;background:#0e1926;color:#8997aa;padding:10px 4px;font-size:9px;font-weight:800}.tip-tabs button.active{background:#ff334d;border-color:#ff6678;color:#fff}
+.tip{display:flex;gap:12px;align-items:center}.tip-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;background:#171d31;color:#ff405a;font-size:21px;flex:none}.tip h3{font-size:12px;margin:0 0 4px}.tip p{font-size:9px;color:#8492a5;margin:0;line-height:1.45}
+
+.settings-group{margin:17px 3px 8px;font-size:11px;font-weight:900}.setting{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 3px;border-bottom:1px solid #1b2a3a}.setting-left{display:flex;align-items:center;gap:10px}.setting-icon{width:29px;height:29px;border-radius:9px;background:#152236;display:grid;place-items:center;font-size:14px}.setting-title{font-size:10px}.setting-desc{font-size:8px;color:#728095;margin-top:2px}.toggle{width:43px;height:24px;border:0;border-radius:20px;background:#27374b;position:relative}.toggle:after{content:"";position:absolute;width:18px;height:18px;top:3px;left:3px;background:#fff;border-radius:50%;transition:.2s}.toggle.on{background:#3d8bff}.toggle.on:after{left:22px}.danger{background:#2a1520;border:1px solid #6e293a;border-radius:14px;color:#ff7180}.data{color:#42e1ad}.arrow{color:#738296;font-size:15px}
+
+.overlay{position:fixed;inset:0;background:#02050bd9;backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:14px;z-index:50}
+.modal{position:relative;width:min(390px,100%);min-height:620px;overflow:hidden;border:1px solid #692b3d;border-radius:25px;background:
+ linear-gradient(180deg,#09111bf0 0,#09111be8 35%,#080c14 100%);box-shadow:0 20px 70px #000e;padding:24px 16px 15px;text-align:center}
+.modal:before{content:"";position:absolute;left:0;right:0;top:0;height:300px;background:radial-gradient(circle at 50% 25%,#ff334d22,transparent 28%),radial-gradient(circle at 50% 80%,#31486255,transparent 55%);pointer-events:none}
+.close{position:absolute;right:13px;top:13px;border:0;background:transparent;color:#e9edf4;font-size:23px;z-index:3}.alarm{font-size:42px;filter:drop-shadow(0 0 13px #ff334d);margin-top:5px;position:relative;z-index:2}.modal h2{font-size:27px;margin:15px 0 8px;position:relative;z-index:2}.modal h2 span{color:#ff4058}.modal>p{font-size:13px;line-height:1.5;color:#d4dae3;max-width:270px;margin:0 auto 16px;position:relative;z-index:2}.warning-image{height:175px;margin:-2px -5px 5px;border-radius:18px;background:
+ radial-gradient(circle at 50% 45%,#182434 0 17%,transparent 18%),
+ linear-gradient(140deg,transparent 45%,#111b27 46% 70%,transparent 71%);opacity:.8}
+.reason-box{background:#101b28dd;border:1px solid #2b3b4e;border-radius:16px;padding:6px 12px;text-align:left;position:relative;z-index:2}.reason{display:flex;align-items:center;gap:10px;padding:9px 0;color:#e0e5ec;font-size:10px}.reason+.reason{border-top:1px solid #1d2b3a}.reason b{font-size:17px}.strong-btn{margin-top:11px;background:linear-gradient(135deg,#ff334d,#e31d3d);border:0;border-radius:14px;color:#fff;font-size:13px;font-weight:950;padding:14px;width:100%}.warning-count{font-size:9px;color:#738296;margin-top:12px}
+
+.pop{position:fixed;z-index:60;padding:10px 14px;border-radius:13px;background:linear-gradient(135deg,#ff334d,#ba1833);border:1px solid #ff7786;color:#fff;font-size:10px;font-weight:950;box-shadow:0 10px 30px #000b;animation:float 4s ease-out forwards;pointer-events:none}@keyframes float{0%{transform:translateY(25px) scale(.9);opacity:0}15%,75%{opacity:1}100%{transform:translateY(-90px);opacity:0}}
+.toast{position:fixed;z-index:80;bottom:92px;left:50%;transform:translateX(-50%);background:#182536;border:1px solid #30445a;border-radius:12px;color:#fff;font-size:10px;padding:10px 14px;display:none;white-space:nowrap}
+input[type=datetime-local]{width:100%;background:#0d1825;color:#fff;border:1px solid #30445a;border-radius:11px;padding:11px;margin-top:8px}
 </style>
 </head>
 <body>
 <div class="app">
+
 <section id="home" class="page active">
-<div class="top"><div><h1>FOCUS MODE</h1><div class="sub">A BETTER YOU EVERY DAY</div></div><button class="btn secondary" style="width:auto;margin:0;padding:9px 12px" onclick="show('more')">•••</button></div>
-<div class="card">
-<div class="ring" id="ring"><div class="ringin"><div class="day" id="day">0</div><div class="muted">DAY STREAK</div><small id="status">Keep Going</small></div></div>
-<div class="grid"><div class="stat"><b id="days">0</b><span>DAYS</span></div><div class="stat"><b id="hours">0</b><span>HOURS</span></div><div class="stat"><b id="mins">0</b><span>MIN</span></div><div class="stat"><b id="secs">0</b><span>SEC</span></div></div>
-<p class="muted" id="started">Started: —</p>
-<button class="btn warn" id="urge" onclick="warning()">I'M HAVING AN URGE</button>
-<button class="btn secondary" onclick="openStart()">SET / CHANGE START DATE</button>
+<div class="topbar">
+ <div class="top-left"><button class="menu" onclick="show('more')">☰</button></div>
+ <div class="brand-wrap"><div class="crown">♛</div><div class="brand">FOCUS MODE</div><div class="tagline">A BETTER YOU EVERY DAY</div></div>
+ <div class="top-right"><button class="gear" onclick="show('more')">⚙</button></div>
+</div>
+<div class="hero">
+ <div class="hero-art"></div><div class="hero-content">
+  <div class="date-line"><span class="date-pill">◫ <b id="startShort">Start Date</b></span><span class="date-pill">◷ <b id="nowShort">Current Date & Time</b></span></div>
+  <div class="ring-wrap"><div class="ring" id="ring"></div><div class="ring-center"><div><div class="fire">🔥</div><div class="day-small">Day</div><div class="day" id="day">0</div><div class="keep">Keep Going</div><div class="discipline">Discipline Today, Freedom Tomorrow</div></div></div></div>
+  <div class="start-panel"><div class="start-box"><div class="label">▣ &nbsp;Start Date</div><div class="value" id="startDate">—</div><div class="sub" id="startDay">—</div></div><div class="start-box"><div class="label">◷ &nbsp;Current Date & Time</div><div class="value" id="nowDate">—</div><div class="sub" id="nowTime">—</div></div></div>
+  <div class="stats-grid"><div class="mini"><div class="ico">▣</div><strong id="days">0</strong><span>DAYS</span></div><div class="mini"><div class="ico">◷</div><strong id="hours">0</strong><span>HOURS</span></div><div class="mini"><div class="ico">◴</div><strong id="mins">0</strong><span>MINUTES</span></div><div class="mini"><div class="ico">ϟ</div><strong id="secs">0</strong><span>SECONDS</span></div></div>
+  <button class="urge" onclick="warning()">▶ &nbsp; I'M HAVING AN URGE<br><small style="font-size:8px;font-weight:700">⚠ Get Motivated Now</small></button>
+  <button class="setdate" onclick="openStart()">SET / CHANGE START DATE</button>
+ </div>
 </div>
 </section>
 
 <section id="stats" class="page">
-<h1>STATS</h1>
-<div class="card"><div class="row"><span>Current streak</span><b id="sCurrent">0 days</b></div><hr><div class="row"><span>Best streak</span><b id="sBest">0 days</b></div><hr><div class="row"><span>Total resets</span><b id="sReset">0</b></div></div>
-<div class="card"><h3>History</h3><p class="muted">Your streak data is stored locally on this device.</p></div>
+<div class="titlebar"><div><div class="title">📊 Your Progress</div><div class="title-sub">Track your journey</div></div><button class="gear" onclick="show('more')">⚙</button></div>
+<div class="screen-card current"><div class="current-top"><span class="current-name">Current Streak</span><span style="font-size:25px">📈</span></div><div class="current-value" id="sCurrent">0 Days</div><div class="current-note">You're doing great!</div></div>
+<div class="stat2"><div class="smallstat"><div class="icon">🏆</div><b id="sBest">0 Days</b><p>Keep breaking your record!</p></div><div class="smallstat"><div class="icon">◔</div><b id="sReset">0</b><p>Learn and move forward.</p></div></div>
+<div class="screen-card" style="margin-top:10px"><div class="calendar-head"><button class="gear">‹</button><b id="monthTitle">September 2026</b><button class="gear">›</button></div><div class="cal" id="calendar"></div></div>
+<div class="screen-card" style="text-align:center;font-style:italic;color:#c5ccd8;font-size:12px">“Discipline is the bridge between<br>your goals and your results.”</div>
 </section>
 
 <section id="tips" class="page">
-<h1>TIPS</h1>
-<div class="card"><h3>When an urge hits</h3><p>Delay the action for 10 minutes. Leave the triggering screen, change location, drink water, and do something physical.</p></div>
-<div class="card"><h3>Make it harder</h3><p>Remove shortcuts to distracting apps and keep your phone away when you need deep focus.</p></div>
-<div class="card"><h3>Remember</h3><p>An urge is temporary. You do not have to act on it.</p></div>
+<div class="titlebar"><div><div class="title">💡 Tips & Motivation</div><div class="title-sub">Read when you need it</div></div><button class="gear" onclick="show('more')">⚙</button></div>
+<div class="tip-tabs"><button class="active">Motivation</button><button>Health</button><button>Productivity</button></div>
+<div id="tipList">
+<div class="screen-card tip"><div class="tip-icon">⛰</div><div><h3>This is Temporary</h3><p>Urges only last a few minutes. Stay strong, it will pass.</p></div></div>
+<div class="screen-card tip"><div class="tip-icon">🎯</div><div><h3>Remember Your Goals</h3><p>Focus on what you want to become.</p></div></div>
+<div class="screen-card tip"><div class="tip-icon">♥</div><div><h3>You Are Not Alone</h3><p>Many people face the same struggle and succeed.</p></div></div>
+<div class="screen-card tip"><div class="tip-icon">🏋</div><div><h3>Do Something Else</h3><p>Take a walk, exercise, read, or work on a skill.</p></div></div>
+<div class="screen-card tip"><div class="tip-icon">★</div><div><h3>A Better Future</h3><p>Every time you resist, you become stronger.</p></div></div>
+<div class="screen-card tip"><div class="tip-icon">🧠</div><div><h3>Control Brings Freedom</h3><p>Discipline today gives you a better tomorrow.</p></div></div>
+</div>
 </section>
 
 <section id="more" class="page">
-<h1>SETTINGS</h1>
-<div class="card"><div class="row"><span>Warning popups</span><button id="wt" class="toggle on" onclick="toggle('warnings')"></button></div><div class="row" style="margin-top:18px"><span>Strong messages</span><button id="st" class="toggle on" onclick="toggle('strong')"></button></div></div>
-<div class="card"><h3>Data</h3><button class="btn secondary" onclick="exportData()">EXPORT DATA</button><label class="btn secondary" style="display:block;text-align:center;cursor:pointer">IMPORT DATA<input type="file" accept=".json" hidden onchange="importData(this.files[0])"></label><button class="btn warn" onclick="resetAll()">RESET STREAK</button></div>
+<div class="titlebar"><div><div class="title">⚙ Settings</div><div class="title-sub">Customize your experience</div></div><button class="gear">⚙</button></div>
+<div class="settings-group">🎨 &nbsp; Appearance</div>
+<div class="screen-card">
+<div class="setting"><div class="setting-left"><div class="setting-icon">☾</div><div><div class="setting-title">Dark Mode</div></div></div><button class="toggle on"></button></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon">●</div><div><div class="setting-title">Accent Color</div></div></div><span class="arrow">›</span></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon">▧</div><div><div class="setting-title">Background Style</div></div></div><span class="arrow">›</span></div>
+</div>
+<div class="settings-group">⚠ &nbsp; Warning Settings</div>
+<div class="screen-card">
+<div class="setting"><div class="setting-left"><div class="setting-icon">◉</div><div><div class="setting-title">Enable Warning Popups</div></div></div><button id="wt" class="toggle on" onclick="toggle('warnings')"></button></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon">▣</div><div><div class="setting-title">Max Popups</div></div></div><span style="font-size:10px">30 &nbsp;›</span></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon">🔊</div><div><div class="setting-title">Popup Sound</div></div></div><button class="toggle on"></button></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon">♟</div><div><div class="setting-title">Strong Warning Messages</div></div></div><button id="st" class="toggle on" onclick="toggle('strong')"></button></div>
+</div>
+<div class="settings-group">🗄 &nbsp; Data</div>
+<div class="screen-card" style="padding:8px 12px">
+<button class="setting" style="width:100%;background:none;border:0;color:#ff7180" onclick="resetAll()"><div class="setting-left"><div class="setting-icon">↻</div><div><div class="setting-title">Reset Streak</div><div class="setting-desc">This will reset your current streak.</div></div></div><span class="arrow">›</span></button>
+<button class="setting" style="width:100%;background:none;border:0;color:#35e3aa" onclick="exportData()"><div class="setting-left"><div class="setting-icon">⇧</div><div><div class="setting-title">Export Data</div></div></div><span class="arrow">›</span></button>
+<label class="setting" style="width:100%;cursor:pointer;color:#35e3aa"><div class="setting-left"><div class="setting-icon">⇩</div><div><div class="setting-title">Import Data</div></div></div><input type="file" accept=".json" onchange="importData(this.files[0])" style="display:none"><span class="arrow">›</span></label>
+</div>
 </section>
 </div>
 
-<nav><button onclick="show('home')" id="nh">Home</button><button onclick="show('stats')">Stats</button><button onclick="show('tips')">Tips</button><button onclick="show('more')">More</button></nav>
+<nav class="bottom"><button id="nh" onclick="show('home')"><span>⌂</span>Home</button><button id="ns" onclick="show('stats')"><span>▥</span>Stats</button><button id="nt" onclick="show('tips')"><span>♧</span>Tips</button><button id="nm" onclick="show('more')"><span>⠿</span>More</button></nav>
 
-<div class="overlay" id="modal"><div class="modal"><h2 id="mtitle">DON'T DO IT!</h2><p id="mtext">Stay strong. This is just an urge. It will pass.</p><div id="mextra"></div><button class="btn" onclick="closeModal()">I'M STAYING STRONG</button></div></div>
+<div class="overlay" id="modal"><div class="modal">
+<button class="close" onclick="closeModal()">×</button><div class="alarm">🚨</div><h2 id="mtitle">DON'T <span>DO IT!</span></h2><p id="mtext">Stay Strong. This is just an urge,<br>it will pass.</p><div class="warning-image"></div>
+<div class="reason-box"><div class="reason"><b>⊘</b> It's not worth it.</div><div class="reason"><b>🎮</b> Do something else.</div><div class="reason"><b>💪</b> Stay focused on your goals.</div><div class="reason"><b>♥</b> You can be better.</div><div class="reason"><b>🌅</b> Your future self will thank you.</div></div>
+<button class="strong-btn" onclick="closeModal()">I'm Staying Strong 💪</button><div class="warning-count" id="warningCount">Warning 1 / 30</div>
+</div></div>
+<div class="toast" id="toast"></div>
 
 <script>
-const KEY='focus-mode-v3';
-let state=JSON.parse(localStorage.getItem(KEY)||'null')||{start:Date.now(),best:0,resets:0,warnings:true,strong:true};
-function save(){localStorage.setItem(KEY,JSON.stringify(state));}
-function fmt(d){return new Date(d).toLocaleString([], {dateStyle:'medium',timeStyle:'short'});}
+const KEY='focus-mode-v4';
+let state=JSON.parse(localStorage.getItem(KEY)||'null')||{start:Date.now(),best:0,resets:0,warnings:true,strong:true,warningCount:0};
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function fmtDate(d){return new Date(d).toLocaleDateString([],{day:'2-digit',month:'short',year:'numeric'})}
+function fmtTime(d){return new Date(d).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:true})}
 function elapsed(){return Math.max(0,Date.now()-state.start)}
 function update(){
  let t=Math.floor(elapsed()/1000),d=Math.floor(t/86400),h=Math.floor(t%86400/3600),m=Math.floor(t%3600/60),s=t%60;
- day.textContent=d;days.textContent=d;hours.textContent=h;mins.textContent=m;secs.textContent=s;started.textContent='Started: '+fmt(state.start);
- sCurrent.textContent=d+' days';sBest.textContent=state.best+' days';sReset.textContent=state.resets;
- ring.style.setProperty('--p',Math.min(100,(d%30)/30*100)+'%');
+ $('day').textContent=d;$('days').textContent=d;$('hours').textContent=h;$('mins').textContent=m;$('secs').textContent=s;
+ $('startDate').textContent=fmtDate(state.start);$('startDay').textContent=new Date(state.start).toLocaleDateString([],{weekday:'long'});
+ $('nowDate').textContent=fmtDate(Date.now());$('nowTime').textContent=fmtTime(Date.now());
+ $('startShort').textContent=fmtDate(state.start);$('nowShort').textContent=fmtTime(Date.now());
+ $('ring').style.setProperty('--p',Math.min(100,(d%30)/30*100)+'%');
+ $('sCurrent').textContent=d+' Days';$('sBest').textContent=state.best+' Days';$('sReset').textContent=state.resets;
+ $('statusText')?.textContent;
+ buildCalendar(d);
 }
-function show(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');update();}
-function openStart(){document.getElementById('mtitle').textContent='SET START DATE';document.getElementById('mtext').innerHTML='<input id="startInput" type="datetime-local" value="'+new Date(state.start-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16)+'"><button class="btn" onclick="setStart()">SAVE START DATE</button>';document.getElementById('mextra').innerHTML='';document.getElementById('modal').style.display='flex'}
-function setStart(){let v=document.getElementById('startInput').value,t=new Date(v).getTime();if(!v||!isFinite(t)||t>Date.now()){alert('Choose a valid past date and time.');return}state.start=t;save();closeModal();update()}
-function closeModal(){modal.style.display='none'}
+function buildCalendar(d){
+ let c=$('calendar');if(!c)return;c.innerHTML='';
+ let now=new Date(),y=now.getFullYear(),mo=now.getMonth(),first=new Date(y,mo,1).getDay(),days=new Date(y,mo+1,0).getDate();
+ $('monthTitle').textContent=now.toLocaleDateString([],{month:'long',year:'numeric'});
+ ['S','M','T','W','T','F','S'].forEach(x=>{let e=document.createElement('div');e.style.background='transparent';e.style.border='0';e.style.color='#667487';e.textContent=x;c.appendChild(e)});
+ for(let i=0;i<first;i++){let e=document.createElement('div');e.style.visibility='hidden';c.appendChild(e)}
+ for(let n=1;n<=days;n++){let e=document.createElement('div');e.textContent=n;let dt=new Date(y,mo,n).getTime();if(dt>=state.start && dt<=Date.now())e.classList.add('done');if(n===now.getDate())e.classList.add('today');c.appendChild(e)}
+}
+function show(id){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');
+ document.querySelectorAll('.bottom button').forEach(x=>x.classList.remove('active'));
+ let n={home:'nh',stats:'ns',tips:'nt',more:'nm'}[id];if(n)$(n).classList.add('active');update();
+}
+function openStart(){
+ $('mtitle').innerHTML='SET <span>START DATE</span>';$('mtext').textContent='Choose the exact date and time your streak began.';
+ $('mextra')?.remove();
+ let old=document.querySelector('.start-input-wrap');if(old)old.remove();
+ let wrap=document.createElement('div');wrap.className='start-input-wrap';wrap.innerHTML='<input id="startInput" type="datetime-local" value="'+new Date(state.start-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16)+'"><button class="strong-btn" onclick="setStart()">SAVE START DATE</button>';
+ document.querySelector('.modal').querySelector('.reason-box').replaceWith(wrap);$('modal').style.display='flex';
+}
+function setStart(){let v=$('startInput').value,t=new Date(v).getTime();if(!v||!isFinite(t)||t>Date.now()){toast('Choose a valid past date and time.');return}state.start=t;save();location.reload()}
+function closeModal(){$('modal').style.display='none';location.reload()}
 function warning(){
- if(!state.warnings)return;
- document.getElementById('mtitle').textContent=state.strong?"DON'T DO IT!":"STAY FOCUSED";
- document.getElementById('mtext').textContent='Stay Strong. This is just an urge, it will pass.';
- document.getElementById('mextra').innerHTML='<p class="muted">Warnings: up to 30 popups</p>';
- modal.style.display='flex';
- const msgs=state.strong?["DON'T DO IT","STAY FOCUSED","WATCH MOVIES","TALK WITH PEOPLE","DON'T TOUCH IT","MOVE ON"]:["KEEP GOING","STAY STRONG","ONE MORE MINUTE","YOU CAN DO THIS"];
- for(let i=0;i<30;i++) setTimeout(()=>pop(msgs[i%msgs.length]),i*90);
+ if(!state.warnings){toast('Warning popups are disabled.');return}
+ state.warningCount=(state.warningCount||0)+1;if(state.warningCount>30)state.warningCount=1;save();
+ $('mtitle').innerHTML=state.strong?"DON'T <span>DO IT!</span>":"STAY <span>FOCUSED!</span>";
+ $('mtext').innerHTML='Stay Strong. This is just an urge,<br>it will pass.';
+ $('warningCount').textContent='Warning '+state.warningCount+' / 30';$('modal').style.display='flex';
+ let msgs=state.strong?["DON'T DO IT","STAY FOCUSED","KEEP GOING","MOVE ON","PROTECT YOUR STREAK","YOU CAN DO THIS"]:["KEEP GOING","STAY STRONG","ONE MORE MINUTE","YOU CAN DO THIS"];
+ for(let i=0;i<30;i++)setTimeout(()=>pop(msgs[i%msgs.length]),i*90);
 }
-function pop(t){let e=document.createElement('div');e.className='pop';e.textContent=t;e.style.left=(Math.random()*75+5)+'vw';e.style.top=(Math.random()*70+10)+'vh';document.body.appendChild(e);setTimeout(()=>e.remove(),4000)}
-function toggle(k){state[k]=!state[k];document.getElementById(k==='warnings'?'wt':'st').classList.toggle('on',state[k]);save()}
-function resetAll(){if(confirm('Reset your streak and start again now?')){let d=Math.floor(elapsed()/86400000);state.best=Math.max(state.best,d);state.resets++;state.start=Date.now();save();update()}}
+function pop(t){let e=document.createElement('div');e.className='pop';e.textContent=t;e.style.left=(Math.random()*72+7)+'vw';e.style.top=(Math.random()*68+10)+'vh';document.body.appendChild(e);setTimeout(()=>e.remove(),4000)}
+function toggle(k){state[k]=!state[k];$(k==='warnings'?'wt':'st').classList.toggle('on',state[k]);save()}
+function resetAll(){if(confirm('Reset your streak and start again now?')){let d=Math.floor(elapsed()/86400000);state.best=Math.max(state.best,d);state.resets++;state.start=Date.now();state.warningCount=0;save();update();toast('Streak reset. New streak started.')}}
 function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.download='focus-mode-data.json';a.click()}
-function importData(f){if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.start)throw 0;state={...state,...x};save();update();alert('Imported successfully.')}catch(e){alert('Invalid Focus Mode data.')}};r.readAsText(f)}
-document.getElementById('wt').classList.toggle('on',state.warnings);document.getElementById('st').classList.toggle('on',state.strong);
-update();setInterval(update,1000);
-if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+function importData(f){if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.start)throw 0;state={...state,...x};save();location.reload()}catch(e){toast('Invalid Focus Mode data.')}};r.readAsText(f)}
+function toast(t){$('toast').textContent=t;$('toast').style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>$('toast').style.display='none',2200)}
+$('wt').classList.toggle('on',state.warnings);$('st').classList.toggle('on',state.strong);show('home');setInterval(update,1000);
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
-</body></html>
+</body>
+</html>
