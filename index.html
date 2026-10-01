@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080914">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Focus Mode</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080914;color:#f5f5fa;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+.app{max-width:460px;margin:auto;min-height:100vh;padding:22px 16px 90px}.top{display:flex;justify-content:space-between;align-items:center}
+h1{font-size:25px;margin:0;font-weight:800}.sub{color:#8d90a5;font-size:12px;margin-top:3px}
+.card{background:#101222;border:1px solid #20243b;border-radius:22px;padding:20px;margin-top:18px;box-shadow:0 10px 35px #0005}
+.ring{width:210px;height:210px;border-radius:50%;margin:12px auto 18px;background:conic-gradient(#ff304f var(--p,0%),#25283c 0);display:grid;place-items:center}
+.ring:after{content:"";width:178px;height:178px;border-radius:50%;background:#101222;position:absolute}
+.ringin{position:relative;z-index:1;text-align:center}.day{font-size:40px;font-weight:900}.muted{color:#8d90a5}
+.btn{width:100%;border:0;border-radius:16px;padding:15px;font-weight:800;font-size:15px;background:#ff304f;color:white;margin-top:12px}.btn.secondary{background:#1b1e30}.btn.warn{background:#b91431}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{background:#171a2b;border-radius:14px;padding:12px 5px;text-align:center}.stat b{display:block;font-size:17px}.stat span{font-size:10px;color:#8d90a5}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0c0e1b;border-top:1px solid #20243b;display:flex;justify-content:center;z-index:20}nav button{background:none;border:0;color:#85899f;padding:14px 20px;font-weight:700}nav button.active{color:#ff405b}
+.page{display:none}.page.active{display:block}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.toggle{width:48px;height:28px;border-radius:20px;background:#303449;position:relative;border:0}.toggle.on{background:#ff304f}.toggle:after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:white;top:3px;left:3px;transition:.2s}.toggle.on:after{left:23px}
+input{width:100%;background:#171a2b;color:#fff;border:1px solid #30344c;border-radius:12px;padding:12px;margin-top:8px}
+.pop{position:fixed;z-index:50;padding:12px 16px;border-radius:14px;background:#ff304f;color:#fff;font-weight:900;box-shadow:0 8px 25px #0008;animation:float 4s linear forwards;pointer-events:none}
+@keyframes float{0%{transform:translateY(30px);opacity:0}15%,75%{opacity:1}100%{transform:translateY(-90px);opacity:0}}
+.overlay{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:22px;z-index:40}.modal{max-width:420px;width:100%;background:#111426;border:1px solid #343851;border-radius:24px;padding:24px;text-align:center}
+textarea{width:100%;min-height:130px;background:#171a2b;color:white;border:1px solid #30344c;border-radius:12px;padding:12px}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="home" class="page active">
+<div class="top"><div><h1>FOCUS MODE</h1><div class="sub">A BETTER YOU EVERY DAY</div></div><button class="btn secondary" style="width:auto;margin:0;padding:9px 12px" onclick="show('more')">•••</button></div>
+<div class="card">
+<div class="ring" id="ring"><div class="ringin"><div class="day" id="day">0</div><div class="muted">DAY STREAK</div><small id="status">Keep Going</small></div></div>
+<div class="grid"><div class="stat"><b id="days">0</b><span>DAYS</span></div><div class="stat"><b id="hours">0</b><span>HOURS</span></div><div class="stat"><b id="mins">0</b><span>MIN</span></div><div class="stat"><b id="secs">0</b><span>SEC</span></div></div>
+<p class="muted" id="started">Started: —</p>
+<button class="btn warn" id="urge" onclick="warning()">I'M HAVING AN URGE</button>
+<button class="btn secondary" onclick="openStart()">SET / CHANGE START DATE</button>
+</div>
+</section>
+
+<section id="stats" class="page">
+<h1>STATS</h1>
+<div class="card"><div class="row"><span>Current streak</span><b id="sCurrent">0 days</b></div><hr><div class="row"><span>Best streak</span><b id="sBest">0 days</b></div><hr><div class="row"><span>Total resets</span><b id="sReset">0</b></div></div>
+<div class="card"><h3>History</h3><p class="muted">Your streak data is stored locally on this device.</p></div>
+</section>
+
+<section id="tips" class="page">
+<h1>TIPS</h1>
+<div class="card"><h3>When an urge hits</h3><p>Delay the action for 10 minutes. Leave the triggering screen, change location, drink water, and do something physical.</p></div>
+<div class="card"><h3>Make it harder</h3><p>Remove shortcuts to distracting apps and keep your phone away when you need deep focus.</p></div>
+<div class="card"><h3>Remember</h3><p>An urge is temporary. You do not have to act on it.</p></div>
+</section>
+
+<section id="more" class="page">
+<h1>SETTINGS</h1>
+<div class="card"><div class="row"><span>Warning popups</span><button id="wt" class="toggle on" onclick="toggle('warnings')"></button></div><div class="row" style="margin-top:18px"><span>Strong messages</span><button id="st" class="toggle on" onclick="toggle('strong')"></button></div></div>
+<div class="card"><h3>Data</h3><button class="btn secondary" onclick="exportData()">EXPORT DATA</button><label class="btn secondary" style="display:block;text-align:center;cursor:pointer">IMPORT DATA<input type="file" accept=".json" hidden onchange="importData(this.files[0])"></label><button class="btn warn" onclick="resetAll()">RESET STREAK</button></div>
+</section>
+</div>
+
+<nav><button onclick="show('home')" id="nh">Home</button><button onclick="show('stats')">Stats</button><button onclick="show('tips')">Tips</button><button onclick="show('more')">More</button></nav>
+
+<div class="overlay" id="modal"><div class="modal"><h2 id="mtitle">DON'T DO IT!</h2><p id="mtext">Stay strong. This is just an urge. It will pass.</p><div id="mextra"></div><button class="btn" onclick="closeModal()">I'M STAYING STRONG</button></div></div>
+
+<script>
+const KEY='focus-mode-v3';
+let state=JSON.parse(localStorage.getItem(KEY)||'null')||{start:Date.now(),best:0,resets:0,warnings:true,strong:true};
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function fmt(d){return new Date(d).toLocaleString([], {dateStyle:'medium',timeStyle:'short'});}
+function elapsed(){return Math.max(0,Date.now()-state.start)}
+function update(){
+ let t=Math.floor(elapsed()/1000),d=Math.floor(t/86400),h=Math.floor(t%86400/3600),m=Math.floor(t%3600/60),s=t%60;
+ day.textContent=d;days.textContent=d;hours.textContent=h;mins.textContent=m;secs.textContent=s;started.textContent='Started: '+fmt(state.start);
+ sCurrent.textContent=d+' days';sBest.textContent=state.best+' days';sReset.textContent=state.resets;
+ ring.style.setProperty('--p',Math.min(100,(d%30)/30*100)+'%');
+}
+function show(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');update();}
+function openStart(){document.getElementById('mtitle').textContent='SET START DATE';document.getElementById('mtext').innerHTML='<input id="startInput" type="datetime-local" value="'+new Date(state.start-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16)+'"><button class="btn" onclick="setStart()">SAVE START DATE</button>';document.getElementById('mextra').innerHTML='';document.getElementById('modal').style.display='flex'}
+function setStart(){let v=document.getElementById('startInput').value,t=new Date(v).getTime();if(!v||!isFinite(t)||t>Date.now()){alert('Choose a valid past date and time.');return}state.start=t;save();closeModal();update()}
+function closeModal(){modal.style.display='none'}
+function warning(){
+ if(!state.warnings)return;
+ document.getElementById('mtitle').textContent=state.strong?"DON'T DO IT!":"STAY FOCUSED";
+ document.getElementById('mtext').textContent='Stay Strong. This is just an urge, it will pass.';
+ document.getElementById('mextra').innerHTML='<p class="muted">Warnings: up to 30 popups</p>';
+ modal.style.display='flex';
+ const msgs=state.strong?["DON'T DO IT","STAY FOCUSED","WATCH MOVIES","TALK WITH PEOPLE","DON'T TOUCH IT","MOVE ON"]:["KEEP GOING","STAY STRONG","ONE MORE MINUTE","YOU CAN DO THIS"];
+ for(let i=0;i<30;i++) setTimeout(()=>pop(msgs[i%msgs.length]),i*90);
+}
+function pop(t){let e=document.createElement('div');e.className='pop';e.textContent=t;e.style.left=(Math.random()*75+5)+'vw';e.style.top=(Math.random()*70+10)+'vh';document.body.appendChild(e);setTimeout(()=>e.remove(),4000)}
+function toggle(k){state[k]=!state[k];document.getElementById(k==='warnings'?'wt':'st').classList.toggle('on',state[k]);save()}
+function resetAll(){if(confirm('Reset your streak and start again now?')){let d=Math.floor(elapsed()/86400000);state.best=Math.max(state.best,d);state.resets++;state.start=Date.now();save();update()}}
+function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.download='focus-mode-data.json';a.click()}
+function importData(f){if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.start)throw 0;state={...state,...x};save();update();alert('Imported successfully.')}catch(e){alert('Invalid Focus Mode data.')}};r.readAsText(f)}
+document.getElementById('wt').classList.toggle('on',state.warnings);document.getElementById('st').classList.toggle('on',state.strong);
+update();setInterval(update,1000);
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
