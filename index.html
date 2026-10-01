@@ -3,221 +3,542 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050a12">
+<meta name="theme-color" content="#050812">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Focus Mode</title>
+<title>Focus Mode — Discipline Every Day</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 :root{
- --bg:#050a12;--panel:#0b1420eF;--panel2:#101c2a;--line:#243448;
- --text:#f7f9ff;--muted:#8997aa;--red:#ff334d;--red2:#ff596d;
- --purple:#8b5cff;--blue:#3d8bff;--green:#20d99a;--gold:#ffbf3f;
+ --bg:#04070d;--bg2:#080d17;--surface:#0b111d;--surface2:#101827;--surface3:#141e2e;
+ --line:#223047;--line2:#30415b;--text:#f5f7fb;--muted:#7f8da3;--muted2:#aeb8c7;
+ --red:#ff304d;--red2:#ff5a70;--purple:#885cff;--blue:#438cff;--green:#2de0a4;
+ --gold:#ffc84a;--shadow:0 24px 70px rgba(0,0,0,.45);
 }
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050a12}
-body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);overflow-x:hidden}
+*{box-sizing:border-box}
+html{background:#02050a}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#16243a 0,#070c15 38%,#02050a 78%);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}
 button,input{font:inherit}
-.app{width:min(100%,480px);min-height:100vh;margin:auto;position:relative;padding:18px 15px calc(88px + env(safe-area-inset-bottom));background:
- radial-gradient(circle at 50% 15%,#1d304533,transparent 34%),
- linear-gradient(180deg,#07101a 0,#050a12 55%,#03070d 100%)}
-.app:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.3;background:
- radial-gradient(circle at 20% 20%,#8b5cff18 0 2px,transparent 3px),
- radial-gradient(circle at 75% 30%,#3d8bff15 0 2px,transparent 3px),
- radial-gradient(circle at 45% 70%,#ff334d12 0 2px,transparent 3px);background-size:110px 130px}
-.page{display:none}.page.active{display:block;animation:pageIn .22s ease}
-@keyframes pageIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+button{cursor:pointer}
+.app{width:min(100%,480px);min-height:100vh;margin:auto;position:relative;overflow:hidden;padding:13px 14px calc(92px + env(safe-area-inset-bottom));background:
+linear-gradient(180deg,rgba(8,13,23,.92),rgba(3,7,13,.98));
+box-shadow:0 0 100px rgba(0,0,0,.55)}
+.app:before{content:"";position:absolute;inset:0;pointer-events:none;background:
+radial-gradient(circle at 15% 22%,rgba(74,125,255,.10),transparent 24%),
+radial-gradient(circle at 88% 18%,rgba(136,92,255,.10),transparent 24%),
+radial-gradient(circle at 50% 64%,rgba(255,48,77,.055),transparent 35%)}
+.page{display:none;position:relative;z-index:2}.page.active{display:block;animation:in .28s ease}
+@keyframes in{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;height:57px}
-.top-left,.top-right{display:flex;align-items:center;gap:12px}
-.menu,.gear{width:38px;height:38px;border:0;background:transparent;color:#e8edf6;font-size:23px;display:grid;place-items:center}
-.brand-wrap{text-align:center;line-height:1}.crown{font-size:19px;color:var(--gold);filter:drop-shadow(0 0 8px #ffbf3f88)}.brand{font-size:20px;font-weight:950;letter-spacing:.4px;margin-top:2px}.tagline{font-size:8px;letter-spacing:1.5px;color:#8793a7;margin-top:5px}
+.header{height:62px;display:grid;grid-template-columns:42px 1fr 42px;align-items:center}
+.icon-btn{width:40px;height:40px;border:1px solid transparent;background:transparent;color:#e8edf5;border-radius:13px;display:grid;place-items:center}
+.icon-btn:hover{background:#ffffff08;border-color:#25344a}
+.brand{text-align:center}
+.brand-logo{height:24px;display:flex;justify-content:center;align-items:center;gap:7px}
+.logo-mark{width:25px;height:25px;filter:drop-shadow(0 0 10px rgba(255,48,77,.35))}
+.brand-name{font-weight:900;font-size:19px;letter-spacing:-.5px}
+.brand-name span{color:var(--red2)}
+.brand-sub{font-size:7px;letter-spacing:2px;color:#758399;margin-top:4px;font-weight:700}
 
-.hero{position:relative;overflow:hidden;border:1px solid #26394d;border-radius:25px;min-height:570px;padding:17px 13px 14px;background:
- linear-gradient(180deg,#07101aee 0%,#07101a66 25%,#050a12f5 63%,#050a12 100%),
- radial-gradient(circle at 76% 24%,#3266a455 0 7%,transparent 24%),
- radial-gradient(circle at 25% 37%,#ff334d20 0 5%,transparent 26%),
- linear-gradient(135deg,#0b1b2a,#11101c 55%,#060a11);
- box-shadow:0 18px 55px #000b}
-.hero:after{content:"";position:absolute;left:-10%;right:-10%;top:0;height:42%;background:linear-gradient(180deg,#0a1828aa,transparent);pointer-events:none}
+.icon{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon.sm{width:17px;height:17px}.icon.lg{width:28px;height:28px}
+
+.hero{position:relative;border:1px solid #26354b;border-radius:27px;overflow:hidden;background:
+linear-gradient(180deg,rgba(7,14,24,.34),rgba(5,9,16,.94) 58%,#050910 100%);
+box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.035);padding:16px 14px 14px}
+.hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.moon{position:absolute;right:27px;top:35px;width:94px;height:94px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#bde8ff,#5d99c8 34%,#1d4161 68%,transparent 70%);opacity:.72;filter:blur(.2px);box-shadow:0 0 45px rgba(76,147,210,.22)}
+.city{position:absolute;bottom:90px;left:0;right:0;height:110px;opacity:.45;background:
+linear-gradient(90deg,transparent 0 5%,#0c1726 5% 10%,transparent 10% 13%,#0d1929 13% 20%,transparent 20% 23%,#0c1725 23% 28%,transparent 28% 32%,#0b1727 32% 39%,transparent 39% 44%,#0c1727 44% 50%,transparent 50% 56%,#0d1929 56% 64%,transparent 64% 68%,#0c1725 68% 75%,transparent 75% 80%,#0d1929 80% 87%,transparent 87% 92%,#0c1727 92% 100%);
+clip-path:polygon(0 65%,5% 52%,10% 70%,15% 38%,20% 62%,25% 48%,30% 66%,35% 31%,40% 60%,45% 43%,50% 64%,55% 35%,60% 58%,65% 45%,70% 64%,75% 34%,80% 60%,85% 46%,90% 66%,95% 38%,100% 58%,100% 100%,0 100%)}
+.silhouette{position:absolute;bottom:105px;left:50%;width:100px;height:110px;transform:translateX(-50%);opacity:.62}
+.silhouette:before{content:"";position:absolute;width:42px;height:42px;border-radius:50%;left:29px;top:2px;background:#050910;box-shadow:0 0 20px #000}
+.silhouette:after{content:"";position:absolute;left:17px;top:35px;width:67px;height:80px;border-radius:48% 48% 12% 12%;background:linear-gradient(135deg,#050910,#142033 55%,#060b13);transform:rotate(-6deg);box-shadow:-18px 36px 0 -5px #060b13,22px 34px 0 -7px #060b13}
 .hero-content{position:relative;z-index:2}
-.hero-art{height:105px;position:absolute;left:0;right:0;top:45px;opacity:.8;pointer-events:none}
-.hero-art:before{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:28px;top:-8px;background:radial-gradient(circle,#83c7ff66,#21466c33 45%,transparent 70%);box-shadow:0 0 50px #4d9ee855}
-.hero-art:after{content:"";position:absolute;left:42%;top:28px;width:74px;height:74px;border-radius:48% 48% 20% 20%;background:linear-gradient(135deg,#101724,#02050a);transform:rotate(-13deg);box-shadow:18px 8px 0 #111a27,-14px 25px 0 #0a111b}
+.hero-top{display:flex;justify-content:space-between;align-items:center;color:#8e9aad;font-size:8px}
+.date-chip{display:flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid #26374d;border-radius:10px;background:#0a121eaa}
+.date-chip b{color:#dfe5ed;font-size:8px}
+.ring-wrap{width:224px;height:224px;margin:20px auto 14px;position:relative}
+.ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from -28deg,var(--red) 0deg,var(--red2) var(--ring),#263147 var(--ring),#182234 360deg);padding:9px;box-shadow:0 0 35px rgba(255,48,77,.17)}
+.ring:before{content:"";position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(255,255,255,.08)}
+.ring-inner{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle,#0d1725,#070d17 72%);display:grid;place-items:center;text-align:center;border:1px solid #2b3a50}
+.ring-glow{position:absolute;inset:-13px;border-radius:50%;background:radial-gradient(circle,rgba(255,48,77,.11),transparent 62%);z-index:-1}
+.flame{width:34px;height:34px;margin:auto;filter:drop-shadow(0 0 10px rgba(255,86,60,.45))}
+.day-label{font-size:13px;color:#c4ccd8;margin-top:3px}.day-number{font-size:54px;font-weight:900;line-height:.95;letter-spacing:-3px;margin-top:2px}.keep{font-size:16px;font-weight:800;margin-top:10px}.motto{font-size:8px;color:#7e8ca1;margin-top:5px;letter-spacing:.2px}
+.date-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.date-box{padding:10px;border-radius:13px;border:1px solid #26374c;background:rgba(11,20,33,.82)}.date-label{font-size:8px;color:#8b98aa}.date-value{font-size:10px;font-weight:800;margin-top:5px}.date-sub{font-size:7px;color:#68788f;margin-top:2px}
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:7px}.metric{border:1px solid #26374c;background:linear-gradient(180deg,#111b2a,#0a131f);border-radius:13px;padding:9px 2px;text-align:center}.metric-icon{height:17px;color:#7289ff}.metric:nth-child(1) .metric-icon{color:#32dca3}.metric:nth-child(2) .metric-icon{color:#438cff}.metric:nth-child(3) .metric-icon{color:#ff9f35}.metric:nth-child(4) .metric-icon{color:#a05dff}.metric b{display:block;font-size:16px;margin-top:4px}.metric span{font-size:7px;color:#7d8ba0;letter-spacing:.5px}
+.primary{width:100%;border:1px solid #ff6c7c;border-radius:15px;color:#fff;background:linear-gradient(135deg,#ff314c,#df1738);padding:13px 12px;margin-top:9px;font-weight:900;font-size:12px;box-shadow:0 12px 30px rgba(255,48,77,.16);position:relative;overflow:hidden}.primary:after{content:"";position:absolute;top:-30%;bottom:-30%;width:60px;left:-90px;transform:skewX(-18deg);background:linear-gradient(90deg,transparent,#ffffff2a,transparent);animation:shine 4s infinite}@keyframes shine{45%,100%{left:125%}}
+.secondary{width:100%;border:1px solid #25364c;border-radius:14px;color:#e5e9ef;background:#111a28;padding:11px;margin-top:7px;font-weight:800;font-size:10px}
 
-.date-line{display:flex;justify-content:space-between;align-items:center;color:#9ba8b8;font-size:9px;margin:8px 5px 0}
-.date-line b{color:#fff;font-size:10px}.date-pill{padding:6px 8px;border-radius:8px;background:#0e1926b5;border:1px solid #27394d}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:10px 3px 15px}.section-title{font-size:18px;font-weight:900}.section-sub{font-size:8px;color:#7f8da3;margin-top:4px}.section-icon{color:#8797ff}
 
-.ring-wrap{position:relative;width:222px;height:222px;margin:19px auto 13px}
-.ring{position:absolute;inset:0;border-radius:50%;padding:10px;background:conic-gradient(from 0deg,var(--red) var(--p,0%),#273345 0);box-shadow:0 0 28px #ff334d44,0 0 70px #ff334d14}
-.ring:before{content:"";position:absolute;inset:5px;border-radius:50%;border:1px solid #ff718055}
-.ring:after{content:"";display:block;width:100%;height:100%;border-radius:50%;background:#08101b}
-.ring-center{position:absolute;inset:10px;display:grid;place-items:center;text-align:center;z-index:2}
-.fire{font-size:22px;filter:drop-shadow(0 0 8px #ff5a32)}.day-small{font-size:14px;color:#d5dbe5;margin-top:4px}.day{font-size:49px;line-height:1;font-weight:950;letter-spacing:-2px}.keep{font-size:15px;font-weight:900;margin-top:8px}.discipline{font-size:9px;color:#8997aa;margin-top:5px}
+.card{border:1px solid #26364b;border-radius:18px;background:linear-gradient(145deg,rgba(17,27,42,.95),rgba(8,14,23,.97));padding:13px;margin-bottom:9px;box-shadow:0 12px 34px rgba(0,0,0,.18)}
+.progress-card{background:linear-gradient(135deg,#251528,#101525 60%,#19102b);border-color:#53304e}.progress-row{display:flex;justify-content:space-between;align-items:center}.progress-label{font-size:9px;color:#ff91a1}.progress-number{font-size:23px;font-weight:900;margin-top:4px}.progress-note{font-size:8px;color:#8d99ab;margin-top:3px}.progress-visual{color:#9a64ff}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat-card{text-align:center;padding:15px 8px;border:1px solid #26364b;border-radius:17px;background:#0b1522}.stat-icon{color:#ffbf43}.stat-value{font-size:15px;font-weight:900;margin-top:6px}.stat-desc{font-size:7px;color:#718198;margin-top:4px}
+.calendar{padding:12px}.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.cal-head button{width:28px;height:28px;border:1px solid #26364b;border-radius:9px;background:#0d1724;color:#a8b3c3}.cal-head b{font-size:10px}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal div{height:28px;display:grid;place-items:center;border:1px solid #1b2a3d;border-radius:7px;background:#0b1521;color:#8290a4;font-size:8px}.cal .head{background:transparent;border:0;color:#68768b}.cal .done{color:#34dda6;border-color:#1b614f;background:#09241d}.cal .today{color:#fff;background:#ef2946;border-color:#ff6576;box-shadow:0 0 12px rgba(255,48,77,.22)}
+.quote{padding:17px;text-align:center;font-size:11px;line-height:1.7;color:#c3cad5;font-style:italic}.quote svg{color:#805aff;margin-bottom:4px}
 
-.start-panel{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:6px 0 8px}
-.start-box{background:#0d1825dd;border:1px solid #26394d;border-radius:13px;padding:10px 9px;min-height:61px}
-.start-box .label{font-size:9px;color:#aab5c4}.start-box .value{font-size:11px;font-weight:800;margin-top:4px}.start-box .sub{font-size:8px;color:#758397;margin-top:2px}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.mini{border:1px solid #26394d;border-radius:13px;padding:11px 3px;text-align:center;background:linear-gradient(180deg,#101c2a,#0a131f)}.mini .ico{font-size:15px}.mini strong{display:block;font-size:17px;margin-top:5px}.mini span{font-size:7px;color:#8997aa;letter-spacing:.7px}
-.urge{margin-top:10px;position:relative;overflow:hidden;background:linear-gradient(135deg,#ff334d,#e41e3e);border:1px solid #ff7180;border-radius:15px;color:#fff;padding:13px 10px;font-size:13px;font-weight:950;box-shadow:0 12px 30px #ff334d30}.urge:after{content:"";position:absolute;top:0;bottom:0;width:50px;background:#ffffff15;transform:skewX(-20deg);animation:shine 3.2s infinite}@keyframes shine{0%{left:-80px}55%,100%{left:120%}}
-.setdate{margin-top:7px;background:#0f1a27;border:1px solid #26394d;border-radius:13px;color:#dfe5ee;width:100%;padding:11px;font-size:10px;font-weight:850}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}.tab{border:1px solid #25364b;border-radius:12px;padding:10px 3px;background:#0d1724;color:#8290a4;font-size:8px;font-weight:800}.tab.active{background:linear-gradient(135deg,#ff304d,#e11f3d);border-color:#ff6879;color:#fff}
+.tip{display:flex;align-items:center;gap:12px}.tip-badge{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#1a2036,#101727);border:1px solid #293956}.tip-badge svg{width:21px;height:21px}.tip h3{font-size:11px;margin:0 0 4px}.tip p{font-size:8px;line-height:1.5;color:#7f8da2;margin:0}
 
-.bottom{position:fixed;z-index:30;left:50%;bottom:0;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(4,1fr);background:#050a12f2;backdrop-filter:blur(18px);border-top:1px solid #203044;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
-.bottom button{border:0;background:transparent;color:#738296;font-size:9px;font-weight:800;padding:3px}.bottom button span{display:block;font-size:20px;margin-bottom:3px}.bottom button.active{color:#ff3e56}.bottom button.active span{filter:drop-shadow(0 0 7px #ff334d)}
+.group-title{font-size:10px;font-weight:900;margin:17px 4px 7px;display:flex;align-items:center;gap:7px}.group-title svg{color:#8d66ff}
+.setting{display:flex;align-items:center;justify-content:space-between;padding:11px 2px;border-bottom:1px solid #1b293b}.setting:last-child{border-bottom:0}.setting-left{display:flex;align-items:center;gap:10px}.setting-icon{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;background:#142035;color:#8ba0ff}.setting-name{font-size:9px;font-weight:700}.setting-desc{font-size:7px;color:#718097;margin-top:3px}.arrow{color:#66768d}.toggle{width:42px;height:23px;border:0;border-radius:20px;background:#26354a;position:relative}.toggle:after{content:"";position:absolute;width:17px;height:17px;left:3px;top:3px;border-radius:50%;background:#fff;transition:.2s}.toggle.on{background:#3f89ff}.toggle.on:after{left:22px}
+.data-btn{width:100%;border:0;background:transparent;color:#36dca5;text-align:left}.danger-btn{color:#ff7182}
 
-.titlebar{display:flex;align-items:center;justify-content:space-between;margin:10px 4px 15px}.title-icon{font-size:22px}.title{font-size:19px;font-weight:950}.title-sub{font-size:9px;color:#8290a3;margin-top:3px}.screen-card{border:1px solid #26394d;border-radius:18px;background:linear-gradient(145deg,#0e1926,#09111b);padding:14px;margin-bottom:10px;box-shadow:0 10px 30px #0005}
-.current{border-color:#5e2840;background:linear-gradient(135deg,#261426,#121424 58%,#17102b)}.current-top{display:flex;align-items:center;justify-content:space-between}.current-name{font-size:10px;color:#ff91a0}.current-value{font-size:23px;font-weight:950;margin-top:3px}.current-note{font-size:9px;color:#a3adbb;margin-top:4px}
-.stat2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.smallstat{border:1px solid #26394d;border-radius:16px;padding:14px;background:#0b1622;text-align:center}.smallstat .icon{font-size:22px}.smallstat b{display:block;font-size:15px;margin-top:5px}.smallstat p{font-size:8px;color:#77869a;margin:4px 0 0}
-.calendar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.calendar-head b{font-size:11px}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.cal div{height:28px;border-radius:7px;display:grid;place-items:center;font-size:8px;color:#8390a2;background:#0d1824;border:1px solid #172637}.cal .done{color:#35e3aa;border-color:#1c705a;background:#09251e}.cal .today{background:#ff334d;color:#fff;border-color:#ff7180}.cal .selected{box-shadow:0 0 0 1px #ff334d inset}
+.bottom{position:fixed;z-index:30;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(4,1fr);padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(4,8,14,.92);backdrop-filter:blur(20px);border-top:1px solid #1f2d40}.nav{border:0;background:transparent;color:#65748a;font-size:7px;font-weight:800;padding:4px}.nav-icon{width:20px;height:20px;display:block;margin:auto auto 3px}.nav.active{color:#ff3e56}.nav.active .nav-icon{filter:drop-shadow(0 0 7px rgba(255,48,77,.55))}
 
-.tip-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px}.tip-tabs button{border:1px solid #26394d;border-radius:12px;background:#0e1926;color:#8997aa;padding:10px 4px;font-size:9px;font-weight:800}.tip-tabs button.active{background:#ff334d;border-color:#ff6678;color:#fff}
-.tip{display:flex;gap:12px;align-items:center}.tip-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;background:#171d31;color:#ff405a;font-size:21px;flex:none}.tip h3{font-size:12px;margin:0 0 4px}.tip p{font-size:9px;color:#8492a5;margin:0;line-height:1.45}
+.overlay{display:none;position:fixed;inset:0;z-index:60;align-items:center;justify-content:center;padding:12px;background:rgba(1,4,9,.84);backdrop-filter:blur(12px)}.modal{position:relative;width:min(405px,100%);max-height:92vh;overflow:auto;border:1px solid #6a2c3d;border-radius:25px;background:linear-gradient(180deg,#0b1420,#070d16);box-shadow:0 30px 100px #000d;padding:19px 15px 15px;text-align:center}.modal-close{position:absolute;right:12px;top:11px;width:32px;height:32px;border:0;border-radius:10px;background:#ffffff08;color:#dce2ea;font-size:20px}.alarm-wrap{width:66px;height:66px;margin:4px auto 10px;border-radius:21px;display:grid;place-items:center;background:radial-gradient(circle,#ff4b5f,#b5142f 70%);box-shadow:0 0 35px rgba(255,48,77,.32)}.alarm-wrap svg{width:34px;height:34px;color:#fff}.modal h2{font-size:25px;margin:5px 0 7px}.modal h2 span{color:#ff4058}.modal-intro{font-size:10px;line-height:1.5;color:#c8d0db;margin:0 auto 11px}.modal-art{height:145px;border-radius:17px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 35%,#273c51,transparent 22%),linear-gradient(145deg,#111c2a,#080d15);margin-bottom:8px}.modal-art:before{content:"";position:absolute;left:50%;bottom:-12px;width:110px;height:135px;transform:translateX(-50%);border-radius:52% 52% 15% 15%;background:linear-gradient(145deg,#111c2b,#03070c);box-shadow:0 -45px 0 -31px #070c13}.reasons{border:1px solid #293a50;border-radius:15px;background:#101b29;padding:3px 11px;text-align:left}.reason{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:9px;color:#d8dee7}.reason+.reason{border-top:1px solid #1c2a3c}.reason-icon{width:20px;height:20px;display:grid;place-items:center;color:#ff5167}.warning-count{font-size:7px;color:#68778d;margin-top:9px}
 
-.settings-group{margin:17px 3px 8px;font-size:11px;font-weight:900}.setting{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 3px;border-bottom:1px solid #1b2a3a}.setting-left{display:flex;align-items:center;gap:10px}.setting-icon{width:29px;height:29px;border-radius:9px;background:#152236;display:grid;place-items:center;font-size:14px}.setting-title{font-size:10px}.setting-desc{font-size:8px;color:#728095;margin-top:2px}.toggle{width:43px;height:24px;border:0;border-radius:20px;background:#27374b;position:relative}.toggle:after{content:"";position:absolute;width:18px;height:18px;top:3px;left:3px;background:#fff;border-radius:50%;transition:.2s}.toggle.on{background:#3d8bff}.toggle.on:after{left:22px}.danger{background:#2a1520;border:1px solid #6e293a;border-radius:14px;color:#ff7180}.data{color:#42e1ad}.arrow{color:#738296;font-size:15px}
+.pop{position:fixed;z-index:70;pointer-events:none;padding:10px 14px;border-radius:12px;border:1px solid #ff7180;background:linear-gradient(135deg,#ff304d,#ba1734);color:#fff;font-size:9px;font-weight:900;box-shadow:0 15px 35px #000c;animation:pop 3.8s ease-out forwards}@keyframes pop{0%{opacity:0;transform:scale(.75) translateY(20px)}14%,76%{opacity:1}100%{opacity:0;transform:scale(1.03) translateY(-100px)}}
+.toast{display:none;position:fixed;z-index:100;left:50%;bottom:95px;transform:translateX(-50%);padding:10px 13px;border:1px solid #31445d;border-radius:11px;background:#121f30;color:#fff;font-size:9px;white-space:nowrap}
+input[type=datetime-local]{width:100%;border:1px solid #30425a;border-radius:11px;background:#0c1724;color:#fff;padding:10px;margin:8px 0}
+@media(min-width:481px){body{padding:20px 0}.app{border:1px solid #172438;border-radius:28px;min-height:calc(100vh - 40px)}.bottom{bottom:20px;border-bottom-left-radius:28px;border-bottom-right-radius:28px}}
 
-.overlay{position:fixed;inset:0;background:#02050bd9;backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:14px;z-index:50}
-.modal{position:relative;width:min(390px,100%);min-height:620px;overflow:hidden;border:1px solid #692b3d;border-radius:25px;background:
- linear-gradient(180deg,#09111bf0 0,#09111be8 35%,#080c14 100%);box-shadow:0 20px 70px #000e;padding:24px 16px 15px;text-align:center}
-.modal:before{content:"";position:absolute;left:0;right:0;top:0;height:300px;background:radial-gradient(circle at 50% 25%,#ff334d22,transparent 28%),radial-gradient(circle at 50% 80%,#31486255,transparent 55%);pointer-events:none}
-.close{position:absolute;right:13px;top:13px;border:0;background:transparent;color:#e9edf4;font-size:23px;z-index:3}.alarm{font-size:42px;filter:drop-shadow(0 0 13px #ff334d);margin-top:5px;position:relative;z-index:2}.modal h2{font-size:27px;margin:15px 0 8px;position:relative;z-index:2}.modal h2 span{color:#ff4058}.modal>p{font-size:13px;line-height:1.5;color:#d4dae3;max-width:270px;margin:0 auto 16px;position:relative;z-index:2}.warning-image{height:175px;margin:-2px -5px 5px;border-radius:18px;background:
- radial-gradient(circle at 50% 45%,#182434 0 17%,transparent 18%),
- linear-gradient(140deg,transparent 45%,#111b27 46% 70%,transparent 71%);opacity:.8}
-.reason-box{background:#101b28dd;border:1px solid #2b3b4e;border-radius:16px;padding:6px 12px;text-align:left;position:relative;z-index:2}.reason{display:flex;align-items:center;gap:10px;padding:9px 0;color:#e0e5ec;font-size:10px}.reason+.reason{border-top:1px solid #1d2b3a}.reason b{font-size:17px}.strong-btn{margin-top:11px;background:linear-gradient(135deg,#ff334d,#e31d3d);border:0;border-radius:14px;color:#fff;font-size:13px;font-weight:950;padding:14px;width:100%}.warning-count{font-size:9px;color:#738296;margin-top:12px}
+/* === FOCUS MODE // CINEMATIC UI UPGRADE === */
+:root{
+ --red:#ff2f55;--red2:#ff667c;--violet:#9b63ff;--cyan:#55c8ff;
+ --glass:rgba(13,20,34,.68);--glass2:rgba(20,28,46,.72);
+ --edge:rgba(157,180,220,.16);
+}
+body{
+ background:
+ radial-gradient(70% 45% at 50% -5%,rgba(62,104,180,.25),transparent 70%),
+ radial-gradient(45% 35% at 100% 35%,rgba(134,72,255,.13),transparent 72%),
+ radial-gradient(42% 35% at 0% 65%,rgba(255,38,74,.09),transparent 72%),
+ #02050a;
+}
+.app{
+ background:
+ linear-gradient(180deg,rgba(4,8,16,.88),rgba(2,5,10,.985));
+}
+.app:after{
+ content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;z-index:20;
+ background-image:radial-gradient(rgba(255,255,255,.7) .45px,transparent .55px);
+ background-size:7px 7px;mix-blend-mode:soft-light;
+}
+.header{
+ height:70px;
+}
+.header:before{
+ content:"";position:absolute;left:16px;right:16px;top:8px;height:52px;
+ border:1px solid rgba(150,175,215,.10);border-radius:18px;
+ background:linear-gradient(180deg,rgba(255,255,255,.035),transparent);
+ pointer-events:none;
+}
+.brand-logo{position:relative}
+.logo-mark{
+ width:29px;height:29px;filter:drop-shadow(0 0 8px rgba(255,45,80,.55)) drop-shadow(0 0 20px rgba(147,77,255,.22));
+}
+.brand-name{font-size:20px;letter-spacing:-.8px}
+.brand-name span{
+ background:linear-gradient(90deg,#ff4c68,#ff9b87);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.brand-sub{letter-spacing:2.5px;color:#8794aa}
 
-.pop{position:fixed;z-index:60;padding:10px 14px;border-radius:13px;background:linear-gradient(135deg,#ff334d,#ba1833);border:1px solid #ff7786;color:#fff;font-size:10px;font-weight:950;box-shadow:0 10px 30px #000b;animation:float 4s ease-out forwards;pointer-events:none}@keyframes float{0%{transform:translateY(25px) scale(.9);opacity:0}15%,75%{opacity:1}100%{transform:translateY(-90px);opacity:0}}
-.toast{position:fixed;z-index:80;bottom:92px;left:50%;transform:translateX(-50%);background:#182536;border:1px solid #30445a;border-radius:12px;color:#fff;font-size:10px;padding:10px 14px;display:none;white-space:nowrap}
-input[type=datetime-local]{width:100%;background:#0d1825;color:#fff;border:1px solid #30445a;border-radius:11px;padding:11px;margin-top:8px}
+.hero{
+ border-radius:30px;
+ border-color:rgba(117,145,191,.23);
+ background:
+ linear-gradient(180deg,rgba(8,17,29,.28),rgba(4,8,15,.82) 56%,#040811 100%);
+ box-shadow:0 30px 90px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);
+}
+.hero:before{
+ content:"";position:absolute;inset:-1px;border-radius:30px;pointer-events:none;
+ background:linear-gradient(135deg,rgba(92,158,255,.20),transparent 30%,transparent 68%,rgba(255,55,91,.15));
+ mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;mask-composite:exclude;padding:1px;
+}
+.hero-bg:before,.hero-bg:after{
+ content:"";position:absolute;border-radius:50%;filter:blur(32px);opacity:.45;
+}
+.hero-bg:before{
+ width:180px;height:100px;left:-55px;top:35px;
+ background:radial-gradient(circle,rgba(45,112,255,.30),transparent 70%);
+ animation:drift 8s ease-in-out infinite alternate;
+}
+.hero-bg:after{
+ width:180px;height:120px;right:-55px;bottom:85px;
+ background:radial-gradient(circle,rgba(255,35,78,.20),transparent 70%);
+ animation:drift2 10s ease-in-out infinite alternate;
+}
+@keyframes drift{to{transform:translate(35px,18px) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-28px,-15px) scale(1.18)}}
+.moon{
+ width:104px;height:104px;right:25px;top:38px;
+ background:radial-gradient(circle at 34% 30%,#e0f4ff,#87bfe7 28%,#3a668a 58%,#162a3c 72%,transparent 74%);
+ box-shadow:0 0 28px rgba(102,182,244,.18),0 0 70px rgba(70,140,220,.13);
+}
+.moon:after{
+ content:"";position:absolute;inset:12px;border-radius:50%;
+ background:radial-gradient(circle at 65% 35%,transparent 0 17%,rgba(16,38,58,.16) 18% 20%,transparent 21% 100%);
+}
+.city{filter:drop-shadow(0 -5px 16px rgba(42,105,175,.12));opacity:.55}
+.silhouette{filter:drop-shadow(0 0 20px rgba(0,0,0,.8));opacity:.72}
+
+.ring-wrap{
+ width:238px;height:238px;margin:22px auto 16px;
+}
+.ring{
+ padding:10px;
+ background:
+ conic-gradient(from -35deg,#ff274e 0deg,#ff6572 var(--ring),#252f47 var(--ring),#111a2a 360deg);
+ box-shadow:
+ 0 0 0 1px rgba(255,255,255,.035),
+ 0 0 24px rgba(255,45,77,.18),
+ 0 0 70px rgba(255,45,77,.08);
+}
+.ring:after{
+ content:"";position:absolute;inset:10px;border-radius:50%;
+ border:1px solid rgba(255,255,255,.06);
+}
+.ring-inner{
+ background:
+ radial-gradient(circle at 50% 42%,rgba(37,54,82,.45),transparent 36%),
+ radial-gradient(circle,#0d1726,#050a13 74%);
+ box-shadow:inset 0 0 45px rgba(0,0,0,.4);
+}
+.ring-glow{
+ inset:-22px;
+ background:radial-gradient(circle,rgba(255,48,77,.15),rgba(139,78,255,.045) 40%,transparent 68%);
+ animation:pulseGlow 2.8s ease-in-out infinite;
+}
+@keyframes pulseGlow{50%{opacity:.45;transform:scale(1.04)}}
+.flame{
+ width:38px;height:38px;color:#ff5366;
+ filter:drop-shadow(0 0 7px rgba(255,65,79,.75)) drop-shadow(0 0 18px rgba(255,52,77,.3));
+}
+.day-number{
+ font-size:58px;
+ background:linear-gradient(180deg,#fff,#d9e0ec);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.keep{font-size:17px}
+.motto{color:#8795aa}
+
+.date-box,.metric,.card,.stat-card{
+ background:linear-gradient(145deg,rgba(18,28,45,.78),rgba(7,13,22,.86));
+ border-color:var(--edge);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.date-box:hover,.metric:hover,.card:hover{
+ border-color:rgba(116,151,207,.25);
+ transform:translateY(-1px);
+}
+.metric{transition:.2s ease}
+.metric b{font-size:17px}
+.metric-icon{filter:drop-shadow(0 0 5px currentColor)}
+
+.primary{
+ min-height:53px;border-radius:17px;
+ background:linear-gradient(105deg,#ff2449,#ff3f5d 45%,#d91539);
+ border-color:rgba(255,146,159,.45);
+ box-shadow:0 14px 32px rgba(255,38,75,.22),inset 0 1px 0 rgba(255,255,255,.16);
+ font-size:12px;letter-spacing:.25px;
+}
+.primary:hover{transform:translateY(-1px);filter:saturate(1.08)}
+.secondary{
+ min-height:48px;border-radius:16px;background:rgba(18,27,42,.8);
+ border-color:rgba(133,159,198,.16);
+}
+
+.bottom{
+ height:76px!important;
+ background:linear-gradient(180deg,rgba(5,9,16,.74),rgba(3,6,11,.96))!important;
+ border-top:1px solid rgba(119,145,188,.15)!important;
+ backdrop-filter:blur(24px)!important;
+}
+.nav{
+ border-radius:15px!important;
+ transition:.2s ease;
+}
+.nav.active{
+ color:#fff!important;
+ background:linear-gradient(180deg,rgba(255,43,76,.13),rgba(255,43,76,.025));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+.nav.active .nav-icon{
+ filter:drop-shadow(0 0 8px rgba(255,45,77,.65));
+}
+
+.section-title{
+ letter-spacing:-.4px;
+}
+.progress-card{
+ background:
+ radial-gradient(circle at 100% 20%,rgba(143,74,255,.22),transparent 32%),
+ linear-gradient(135deg,rgba(46,20,42,.95),rgba(12,18,31,.95));
+ border-color:rgba(169,79,158,.32);
+}
+.stat-card{min-height:110px}
+.cal div{transition:.15s ease}
+.cal div:hover{border-color:rgba(109,144,203,.3);transform:translateY(-1px)}
+.tip{
+ display:flex!important;align-items:center;gap:12px;
+}
+.tip-badge{
+ width:45px!important;height:45px!important;min-width:45px!important;
+ display:grid;place-items:center!important;border-radius:14px!important;
+ background:linear-gradient(145deg,#1a2337,#0d1524)!important;
+ border:1px solid rgba(125,150,195,.14)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+.tip h3{margin:0 0 4px!important}
+.tip p{margin:0!important}
+
+.setting{
+ min-height:58px!important;
+ border-bottom-color:rgba(127,151,192,.08)!important;
+}
+.setting-icon{
+ width:34px!important;height:34px!important;
+ display:grid!important;place-items:center!important;
+ border-radius:11px!important;background:rgba(90,117,166,.09);
+}
+.toggle{
+ width:45px!important;height:25px!important;
+ border-radius:99px!important;
+ background:#1a2435!important;border:1px solid #2c3b53!important;
+ position:relative;
+}
+.toggle:after{
+ content:"";position:absolute;width:19px;height:19px;top:2px;left:2px;border-radius:50%;
+ background:#7d8ba0;transition:.2s;
+}
+.toggle.on{background:#e92b49!important;border-color:#ff5b70!important}
+.toggle.on:after{left:22px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+
+.overlay{
+ background:rgba(1,4,9,.74)!important;
+ backdrop-filter:blur(15px)!important;
+}
+.modal{
+ width:min(92%,420px)!important;
+ max-height:90vh;overflow:auto;
+ border:1px solid rgba(137,159,202,.25)!important;
+ border-radius:28px!important;
+ background:
+ radial-gradient(circle at 50% 0,rgba(255,49,78,.13),transparent 30%),
+ linear-gradient(160deg,rgba(18,25,40,.97),rgba(5,9,16,.985))!important;
+ box-shadow:0 35px 100px rgba(0,0,0,.7),0 0 70px rgba(255,36,72,.08)!important;
+}
+.alarm-wrap{
+ width:68px!important;height:68px!important;
+ border-radius:22px!important;
+ background:radial-gradient(circle,rgba(255,45,71,.24),rgba(255,45,71,.04))!important;
+ border:1px solid rgba(255,77,97,.35)!important;
+ box-shadow:0 0 30px rgba(255,39,67,.16);
+}
+.modal-art{
+ height:120px!important;
+ margin:12px 0!important;
+ border-radius:18px!important;
+ background:
+ radial-gradient(circle at 50% 22%,rgba(89,122,168,.20),transparent 30%),
+ linear-gradient(180deg,rgba(18,29,45,.75),rgba(5,10,17,.92));
+ border:1px solid rgba(122,149,194,.12)!important;
+ position:relative;overflow:hidden;
+}
+.modal-art:before{
+ content:"";position:absolute;width:74px;height:74px;border-radius:50%;
+ left:50%;top:16px;transform:translateX(-50%);
+ background:radial-gradient(circle at 35% 30%,#1d2a3c,#050910 68%);
+ box-shadow:0 55px 0 20px #070c14;
+}
+.modal-art:after{
+ content:"STAY STRONG";position:absolute;left:0;right:0;bottom:10px;
+ text-align:center;font-size:8px;letter-spacing:3px;font-weight:900;color:#69788e;
+}
+.reason{
+ background:rgba(255,255,255,.025)!important;
+ border:1px solid rgba(127,151,190,.08)!important;
+ border-radius:13px!important;
+}
+.reason-icon{
+ display:inline-grid!important;place-items:center!important;
+ width:24px;height:24px;border-radius:8px;
+ background:rgba(255,45,77,.1);color:#ff6174;
+}
+.warning-count{color:#78879d!important}
+
+.pop{
+ z-index:9999!important;
+ border:1px solid rgba(255,104,125,.45)!important;
+ background:linear-gradient(135deg,rgba(26,9,16,.94),rgba(13,16,28,.94))!important;
+ box-shadow:0 15px 40px rgba(0,0,0,.4),0 0 25px rgba(255,45,77,.16)!important;
+ backdrop-filter:blur(14px)!important;
+ border-radius:14px!important;
+ padding:12px 15px!important;
+ font-weight:900!important;
+ letter-spacing:.6px!important;
+ animation:floatPop 3.8s ease forwards!important;
+}
+@keyframes floatPop{
+ 0%{opacity:0;transform:scale(.7) translateY(14px) rotate(-2deg)}
+ 12%{opacity:1;transform:scale(1) translateY(0) rotate(0)}
+ 78%{opacity:1}
+ 100%{opacity:0;transform:scale(.92) translateY(-18px) rotate(2deg)}
+}
+
+.toast{
+ border:1px solid rgba(122,151,204,.2)!important;
+ background:rgba(12,19,31,.94)!important;
+ backdrop-filter:blur(18px)!important;
+ box-shadow:0 15px 45px rgba(0,0,0,.45)!important;
+}
+
+@media (min-width:700px){
+ .app{min-height:100vh;border-left:1px solid rgba(255,255,255,.03);border-right:1px solid rgba(255,255,255,.03)}
+}
+
+
+.ambient{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;opacity:.5;box-shadow:0 0 8px #fff;animation:twinkle 3s ease-in-out infinite}
+.ambient-a{left:18%;top:23%;animation-delay:.3s}.ambient-b{left:72%;top:19%;animation-delay:1.2s}.ambient-c{left:43%;top:31%;animation-delay:2s}
+@keyframes twinkle{0%,100%{opacity:.12;transform:scale(.7)}50%{opacity:.8;transform:scale(1.35)}}
+
 </style>
 </head>
 <body>
 <div class="app">
+<svg width="0" height="0" style="position:absolute">
+<symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M7 16v-4m5 4V8m5 8V4"/></symbol>
+<symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6m-5 3h4M8 14.5A7 7 0 1 1 16 14l-1.5 2.5h-5z"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1-1.5 2.6-.2-.1a2 2 0 0 0-2.1.1l-.2.1a2 2 0 0 0-1 1.8v.2h-3v-.2a2 2 0 0 0-1-1.8l-.2-.1a2 2 0 0 0-2.1-.1l-.2.1-1.5-2.6.1-.1a2 2 0 0 0 .1-2.1l-.1-.2a2 2 0 0 0-1.8-1H4V8.5h.2a2 2 0 0 0 1.8-1l.1-.2a2 2 0 0 0-.1-2.1l-.1-.1 1.5-2.6.2.1a2 2 0 0 0 2.1-.1l.2-.1a2 2 0 0 0 1-1.8V.5h3v.2a2 2 0 0 0 1 1.8l.2.1a2 2 0 0 0 2.1.1l.2-.1 1.5 2.6-.1.1a2 2 0 0 0-.1 2.1l.1.2a2 2 0 0 0 1.8 1h.2v3h-.2a2 2 0 0 0-1.8 1l-.1.2a2 2 0 0 0 .1 2.1Z"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-fire" viewBox="0 0 24 24"><path d="M12 22c4 0 7-2.8 7-7 0-3.4-2.1-5.5-4.5-7.8.2 2.3-1.1 3.5-2.4 4.2.2-3.4-1.3-6.1-3.9-8.4.2 3.7-3.2 5.8-3.2 10.1C5 18.9 8.1 22 12 22Z"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="m15 9 5-5m-3 0h3v3"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5-3.3 8.4-8 10-4.7-1.6-8-5-8-10V6z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></symbol>
+<symbol id="i-warning" viewBox="0 0 24 24"><path d="m12 3 9 17H3z"/><path d="M12 9v4m0 3h.01"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM12 14v4m-4 3h8M4 6h3m10 0h3"/></symbol>
+<symbol id="i-quote" viewBox="0 0 24 24"><path d="M7 8H4v5h5V8c0-2 1-3 3-4M17 8h-3v5h5V8c0-2 1-3 3-4"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12m0 0-4-4m4 4 4-4M5 20h14"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M5 8a8 8 0 1 1 1 9"/><path d="M5 4v4h4"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h7m4 0h5M4 17h3m4 0h9M11 4v6m-4 4v6m8-13v6m0 4v3"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 10a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20h4"/></symbol>
+<symbol id="i-brain" viewBox="0 0 24 24"><path d="M9 5a3 3 0 0 0-5 2 3 3 0 0 0 1 5 3 3 0 0 0 2 5 3 3 0 0 0 4 2V7a3 3 0 0 0-3-2Zm6 0a3 3 0 0 1 5 2 3 3 0 0 1-1 5 3 3 0 0 1-2 5 3 3 0 0 1-4 2V7a3 3 0 0 1 3-2Z"/></symbol>
+<symbol id="i-download2" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></symbol>
+</svg>
 
 <section id="home" class="page active">
-<div class="topbar">
- <div class="top-left"><button class="menu" onclick="show('more')">☰</button></div>
- <div class="brand-wrap"><div class="crown">♛</div><div class="brand">FOCUS MODE</div><div class="tagline">A BETTER YOU EVERY DAY</div></div>
- <div class="top-right"><button class="gear" onclick="show('more')">⚙</button></div>
-</div>
-<div class="hero">
- <div class="hero-art"></div><div class="hero-content">
-  <div class="date-line"><span class="date-pill">◫ <b id="startShort">Start Date</b></span><span class="date-pill">◷ <b id="nowShort">Current Date & Time</b></span></div>
-  <div class="ring-wrap"><div class="ring" id="ring"></div><div class="ring-center"><div><div class="fire">🔥</div><div class="day-small">Day</div><div class="day" id="day">0</div><div class="keep">Keep Going</div><div class="discipline">Discipline Today, Freedom Tomorrow</div></div></div></div>
-  <div class="start-panel"><div class="start-box"><div class="label">▣ &nbsp;Start Date</div><div class="value" id="startDate">—</div><div class="sub" id="startDay">—</div></div><div class="start-box"><div class="label">◷ &nbsp;Current Date & Time</div><div class="value" id="nowDate">—</div><div class="sub" id="nowTime">—</div></div></div>
-  <div class="stats-grid"><div class="mini"><div class="ico">▣</div><strong id="days">0</strong><span>DAYS</span></div><div class="mini"><div class="ico">◷</div><strong id="hours">0</strong><span>HOURS</span></div><div class="mini"><div class="ico">◴</div><strong id="mins">0</strong><span>MINUTES</span></div><div class="mini"><div class="ico">ϟ</div><strong id="secs">0</strong><span>SECONDS</span></div></div>
-  <button class="urge" onclick="warning()">▶ &nbsp; I'M HAVING AN URGE<br><small style="font-size:8px;font-weight:700">⚠ Get Motivated Now</small></button>
-  <button class="setdate" onclick="openStart()">SET / CHANGE START DATE</button>
- </div>
-</div>
+<header class="header"><button class="icon-btn" onclick="show('more')"><svg class="icon"><use href="#i-menu"/></svg></button><div class="brand"><div class="brand-logo"><svg class="logo-mark" viewBox="0 0 40 40" aria-label="Focus Mode logo">
+<defs><linearGradient id="lg" x1="4" y1="4" x2="36" y2="36"><stop stop-color="#ff304f"/><stop offset=".55" stop-color="#ff687c"/><stop offset="1" stop-color="#914dff"/></linearGradient></defs>
+<path d="M20 3 34 8v9c0 9-5.5 15.8-14 19C11.5 32.8 6 26 6 17V8z" fill="url(#lg)" opacity=".22" stroke="url(#lg)" stroke-width="1.6"/>
+<path d="M20 8.5 25 19h-3.6l3.2 7.5-10.4-11H18z" fill="#fff"/>
+<circle cx="29.8" cy="10.2" r="2" fill="#fff" opacity=".9"/></svg><div class="brand-name">FOCUS <span>MODE</span></div></div><div class="brand-sub">A BETTER YOU EVERY DAY</div></div><button class="icon-btn" onclick="show('more')"><svg class="icon"><use href="#i-settings"/></svg></button></header>
+
+<div class="hero"><div class="hero-bg"><div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="ambient ambient-c"></div><div class="moon"></div><div class="city"></div><div class="silhouette"></div></div><div class="hero-content">
+<div class="hero-top"><div class="date-chip"><svg class="icon sm"><use href="#i-calendar"/></svg><b id="startChip">START DATE</b></div><div class="date-chip"><svg class="icon sm"><use href="#i-clock"/></svg><b id="nowChip">NOW</b></div></div>
+<div class="ring-wrap"><div class="ring-glow"></div><div class="ring" id="ring"><div class="ring-inner"><div><svg class="flame icon" viewBox="0 0 24 24"><use href="#i-fire"/></svg><div class="day-label">Day</div><div class="day-number" id="day">0</div><div class="keep">Keep Going</div><div class="motto">Discipline today. Freedom tomorrow.</div></div></div></div></div>
+<div class="date-grid"><div class="date-box"><div class="date-label">START DATE</div><div class="date-value" id="startDate">—</div><div class="date-sub" id="startDay">—</div></div><div class="date-box"><div class="date-label">CURRENT DATE & TIME</div><div class="date-value" id="nowDate">—</div><div class="date-sub" id="nowTime">—</div></div></div>
+<div class="metric-grid"><div class="metric"><svg class="metric-icon icon"><use href="#i-calendar"/></svg><b id="days">0</b><span>DAYS</span></div><div class="metric"><svg class="metric-icon icon"><use href="#i-clock"/></svg><b id="hours">0</b><span>HOURS</span></div><div class="metric"><svg class="metric-icon icon"><use href="#i-clock"/></svg><b id="mins">0</b><span>MINUTES</span></div><div class="metric"><svg class="metric-icon icon"><use href="#i-fire"/></svg><b id="secs">0</b><span>SECONDS</span></div></div>
+<button class="primary" onclick="warning()">I'M HAVING AN URGE <span style="opacity:.75">•</span> GET MOTIVATED</button><button class="secondary" onclick="openStart()">SET / CHANGE START DATE</button>
+</div></div>
 </section>
 
 <section id="stats" class="page">
-<div class="titlebar"><div><div class="title">📊 Your Progress</div><div class="title-sub">Track your journey</div></div><button class="gear" onclick="show('more')">⚙</button></div>
-<div class="screen-card current"><div class="current-top"><span class="current-name">Current Streak</span><span style="font-size:25px">📈</span></div><div class="current-value" id="sCurrent">0 Days</div><div class="current-note">You're doing great!</div></div>
-<div class="stat2"><div class="smallstat"><div class="icon">🏆</div><b id="sBest">0 Days</b><p>Keep breaking your record!</p></div><div class="smallstat"><div class="icon">◔</div><b id="sReset">0</b><p>Learn and move forward.</p></div></div>
-<div class="screen-card" style="margin-top:10px"><div class="calendar-head"><button class="gear">‹</button><b id="monthTitle">September 2026</b><button class="gear">›</button></div><div class="cal" id="calendar"></div></div>
-<div class="screen-card" style="text-align:center;font-style:italic;color:#c5ccd8;font-size:12px">“Discipline is the bridge between<br>your goals and your results.”</div>
+<div class="section-head"><div><div class="section-title">Your Progress</div><div class="section-sub">Track your journey and keep building.</div></div><svg class="icon section-icon"><use href="#i-chart"/></svg></div>
+<div class="card progress-card"><div class="progress-row"><div><div class="progress-label">CURRENT STREAK</div><div class="progress-number" id="sCurrent">0 Days</div><div class="progress-note">You're building momentum.</div></div><svg class="icon lg progress-visual"><use href="#i-chart"/></svg></div></div>
+<div class="stat-grid"><div class="stat-card"><svg class="icon stat-icon"><use href="#i-trophy"/></svg><div class="stat-value" id="sBest">0 Days</div><div class="stat-desc">Best streak</div></div><div class="stat-card"><svg class="icon" style="color:#9b64ff"><use href="#i-reset"/></svg><div class="stat-value" id="sReset">0</div><div class="stat-desc">Total resets</div></div></div>
+<div class="card calendar"><div class="cal-head"><button onclick="changeMonth(-1)">‹</button><b id="monthTitle"></b><button onclick="changeMonth(1)">›</button></div><div class="cal" id="calendar"></div></div>
+<div class="card quote"><svg class="icon"><use href="#i-quote"/></svg><br>Discipline is the bridge between<br>your goals and your results.</div>
 </section>
 
 <section id="tips" class="page">
-<div class="titlebar"><div><div class="title">💡 Tips & Motivation</div><div class="title-sub">Read when you need it</div></div><button class="gear" onclick="show('more')">⚙</button></div>
-<div class="tip-tabs"><button class="active">Motivation</button><button>Health</button><button>Productivity</button></div>
-<div id="tipList">
-<div class="screen-card tip"><div class="tip-icon">⛰</div><div><h3>This is Temporary</h3><p>Urges only last a few minutes. Stay strong, it will pass.</p></div></div>
-<div class="screen-card tip"><div class="tip-icon">🎯</div><div><h3>Remember Your Goals</h3><p>Focus on what you want to become.</p></div></div>
-<div class="screen-card tip"><div class="tip-icon">♥</div><div><h3>You Are Not Alone</h3><p>Many people face the same struggle and succeed.</p></div></div>
-<div class="screen-card tip"><div class="tip-icon">🏋</div><div><h3>Do Something Else</h3><p>Take a walk, exercise, read, or work on a skill.</p></div></div>
-<div class="screen-card tip"><div class="tip-icon">★</div><div><h3>A Better Future</h3><p>Every time you resist, you become stronger.</p></div></div>
-<div class="screen-card tip"><div class="tip-icon">🧠</div><div><h3>Control Brings Freedom</h3><p>Discipline today gives you a better tomorrow.</p></div></div>
-</div>
+<div class="section-head"><div><div class="section-title">Tips & Motivation</div><div class="section-sub">Read when you need a reset.</div></div><svg class="icon section-icon"><use href="#i-bulb"/></svg></div>
+<div class="tabs"><button class="tab active">Motivation</button><button class="tab">Health</button><button class="tab">Productivity</button></div>
+<div class="card tip"><div class="tip-badge"><svg class="icon" style="color:#ff5369"><use href="#i-fire"/></svg></div><div><h3>This Is Temporary</h3><p>Urges rise, peak, and pass. Give yourself a few minutes.</p></div></div>
+<div class="card tip"><div class="tip-badge"><svg class="icon" style="color:#ff5369"><use href="#i-target"/></svg></div><div><h3>Remember Your Goals</h3><p>Bring your attention back to the person you are trying to become.</p></div></div>
+<div class="card tip"><div class="tip-badge"><svg class="icon" style="color:#ff5369"><use href="#i-shield"/></svg></div><div><h3>Protect Your Progress</h3><p>Your streak is evidence of repeated decisions, not luck.</p></div></div>
+<div class="card tip"><div class="tip-badge"><svg class="icon" style="color:#9a64ff"><use href="#i-bulb"/></svg></div><div><h3>Change Your Environment</h3><p>Stand up, move rooms, drink water, or start a different task.</p></div></div>
+<div class="card tip"><div class="tip-badge"><svg class="icon" style="color:#ffbf43"><use href="#i-trophy"/></svg></div><div><h3>Think Longer Term</h3><p>A small decision now can support a much better tomorrow.</p></div></div>
+<div class="card tip"><div class="tip-badge"><svg class="icon" style="color:#9a64ff"><use href="#i-brain"/></svg></div><div><h3>Control Creates Freedom</h3><p>Practice choosing what matters instead of reacting automatically.</p></div></div>
 </section>
 
 <section id="more" class="page">
-<div class="titlebar"><div><div class="title">⚙ Settings</div><div class="title-sub">Customize your experience</div></div><button class="gear">⚙</button></div>
-<div class="settings-group">🎨 &nbsp; Appearance</div>
-<div class="screen-card">
-<div class="setting"><div class="setting-left"><div class="setting-icon">☾</div><div><div class="setting-title">Dark Mode</div></div></div><button class="toggle on"></button></div>
-<div class="setting"><div class="setting-left"><div class="setting-icon">●</div><div><div class="setting-title">Accent Color</div></div></div><span class="arrow">›</span></div>
-<div class="setting"><div class="setting-left"><div class="setting-icon">▧</div><div><div class="setting-title">Background Style</div></div></div><span class="arrow">›</span></div>
+<div class="section-head"><div><div class="section-title">Settings</div><div class="section-sub">Customize your Focus Mode experience.</div></div><svg class="icon section-icon"><use href="#i-settings"/></svg></div>
+<div class="group-title"><svg class="icon sm"><use href="#i-sliders"/></svg> APPEARANCE</div>
+<div class="card">
+<div class="setting"><div class="setting-left"><div class="setting-icon"><svg class="icon sm"><use href="#i-shield"/></svg></div><div><div class="setting-name">Dark Mode</div><div class="setting-desc">Low-light interface</div></div></div><button class="toggle on"></button></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon" style="color:#ff5369">●</div><div><div class="setting-name">Accent Color</div><div class="setting-desc">Neon red</div></div></div><span class="arrow">›</span></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon" style="color:#9a64ff">▣</div><div><div class="setting-name">Background Style</div><div class="setting-desc">Night city</div></div></div><span class="arrow">›</span></div>
 </div>
-<div class="settings-group">⚠ &nbsp; Warning Settings</div>
-<div class="screen-card">
-<div class="setting"><div class="setting-left"><div class="setting-icon">◉</div><div><div class="setting-title">Enable Warning Popups</div></div></div><button id="wt" class="toggle on" onclick="toggle('warnings')"></button></div>
-<div class="setting"><div class="setting-left"><div class="setting-icon">▣</div><div><div class="setting-title">Max Popups</div></div></div><span style="font-size:10px">30 &nbsp;›</span></div>
-<div class="setting"><div class="setting-left"><div class="setting-icon">🔊</div><div><div class="setting-title">Popup Sound</div></div></div><button class="toggle on"></button></div>
-<div class="setting"><div class="setting-left"><div class="setting-icon">♟</div><div><div class="setting-title">Strong Warning Messages</div></div></div><button id="st" class="toggle on" onclick="toggle('strong')"></button></div>
+<div class="group-title"><svg class="icon sm"><use href="#i-warning"/></svg> WARNING SETTINGS</div>
+<div class="card">
+<div class="setting"><div class="setting-left"><div class="setting-icon"><svg class="icon sm"><use href="#i-bell"/></svg></div><div><div class="setting-name">Warning Popups</div><div class="setting-desc">Show motivational warnings</div></div></div><button id="wt" class="toggle on" onclick="toggle('warnings')"></button></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon"><svg class="icon sm"><use href="#i-grid"/></svg></div><div><div class="setting-name">Maximum Popups</div><div class="setting-desc">30 simultaneous messages</div></div></div><span style="font-size:9px">30</span></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon"><svg class="icon sm"><use href="#i-bell"/></svg></div><div><div class="setting-name">Popup Sound</div></div></div><button class="toggle on"></button></div>
+<div class="setting"><div class="setting-left"><div class="setting-icon"><svg class="icon sm"><use href="#i-warning"/></svg></div><div><div class="setting-name">Strong Messages</div><div class="setting-desc">More direct wording</div></div></div><button id="st" class="toggle on" onclick="toggle('strong')"></button></div>
 </div>
-<div class="settings-group">🗄 &nbsp; Data</div>
-<div class="screen-card" style="padding:8px 12px">
-<button class="setting" style="width:100%;background:none;border:0;color:#ff7180" onclick="resetAll()"><div class="setting-left"><div class="setting-icon">↻</div><div><div class="setting-title">Reset Streak</div><div class="setting-desc">This will reset your current streak.</div></div></div><span class="arrow">›</span></button>
-<button class="setting" style="width:100%;background:none;border:0;color:#35e3aa" onclick="exportData()"><div class="setting-left"><div class="setting-icon">⇧</div><div><div class="setting-title">Export Data</div></div></div><span class="arrow">›</span></button>
-<label class="setting" style="width:100%;cursor:pointer;color:#35e3aa"><div class="setting-left"><div class="setting-icon">⇩</div><div><div class="setting-title">Import Data</div></div></div><input type="file" accept=".json" onchange="importData(this.files[0])" style="display:none"><span class="arrow">›</span></label>
+<div class="group-title"><svg class="icon sm"><use href="#i-chart"/></svg> DATA</div>
+<div class="card">
+<button class="setting data-btn danger-btn" onclick="resetAll()"><div class="setting-left"><div class="setting-icon" style="color:#ff5369"><svg class="icon sm"><use href="#i-reset"/></svg></div><div><div class="setting-name">Reset Streak</div><div class="setting-desc">Start your current streak over</div></div></div><span class="arrow">›</span></button>
+<button class="setting data-btn" onclick="exportData()"><div class="setting-left"><div class="setting-icon" style="color:#35dda5"><svg class="icon sm"><use href="#i-upload"/></svg></div><div><div class="setting-name">Export Data</div><div class="setting-desc">Save a backup of your streak</div></div></div><span class="arrow">›</span></button>
+<label class="setting data-btn"><div class="setting-left"><div class="setting-icon" style="color:#35dda5"><svg class="icon sm"><use href="#i-download"/></svg></div><div><div class="setting-name">Import Data</div><div class="setting-desc">Restore a previous backup</div></div></div><input type="file" accept=".json" onchange="importData(this.files[0])" style="display:none"><span class="arrow">›</span></label>
 </div>
 </section>
 </div>
 
-<nav class="bottom"><button id="nh" onclick="show('home')"><span>⌂</span>Home</button><button id="ns" onclick="show('stats')"><span>▥</span>Stats</button><button id="nt" onclick="show('tips')"><span>♧</span>Tips</button><button id="nm" onclick="show('more')"><span>⠿</span>More</button></nav>
+<nav class="bottom"><button id="nh" class="nav active" onclick="show('home')"><svg class="nav-icon icon"><use href="#i-home"/></svg>HOME</button><button id="ns" class="nav" onclick="show('stats')"><svg class="nav-icon icon"><use href="#i-chart"/></svg>STATS</button><button id="nt" class="nav" onclick="show('tips')"><svg class="nav-icon icon"><use href="#i-bulb"/></svg>TIPS</button><button id="nm" class="nav" onclick="show('more')"><svg class="nav-icon icon"><use href="#i-grid"/></svg>MORE</button></nav>
 
-<div class="overlay" id="modal"><div class="modal">
-<button class="close" onclick="closeModal()">×</button><div class="alarm">🚨</div><h2 id="mtitle">DON'T <span>DO IT!</span></h2><p id="mtext">Stay Strong. This is just an urge,<br>it will pass.</p><div class="warning-image"></div>
-<div class="reason-box"><div class="reason"><b>⊘</b> It's not worth it.</div><div class="reason"><b>🎮</b> Do something else.</div><div class="reason"><b>💪</b> Stay focused on your goals.</div><div class="reason"><b>♥</b> You can be better.</div><div class="reason"><b>🌅</b> Your future self will thank you.</div></div>
-<button class="strong-btn" onclick="closeModal()">I'm Staying Strong 💪</button><div class="warning-count" id="warningCount">Warning 1 / 30</div>
-</div></div>
+<div id="modal" class="overlay"><div class="modal"><button class="modal-close" onclick="closeModal()">×</button><div class="alarm-wrap"><svg class="icon"><use href="#i-warning"/></svg></div><h2 id="mtitle">DON'T <span>DO IT!</span></h2><p class="modal-intro" id="mtext">Stay strong. This is only an urge.<br>Give it a few minutes and let it pass.</p><div class="modal-art"></div><div class="reasons"><div class="reason"><span class="reason-icon">×</span> It is not worth trading your progress for a moment.</div><div class="reason"><span class="reason-icon">→</span> Change what you are doing right now.</div><div class="reason"><span class="reason-icon">+</span> Stay focused on the goals you chose.</div><div class="reason"><span class="reason-icon">◆</span> You are capable of making the next good decision.</div><div class="reason"><span class="reason-icon">↑</span> Your future self benefits from this choice.</div></div><button class="primary" onclick="closeModal()">I'M STAYING STRONG</button><div class="warning-count" id="warningCount">WARNING 1 / 30</div></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY='focus-mode-v4';
+const KEY='focus-mode-v5';
 let state=JSON.parse(localStorage.getItem(KEY)||'null')||{start:Date.now(),best:0,resets:0,warnings:true,strong:true,warningCount:0};
+let calDate=new Date();
 const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
-function fmtDate(d){return new Date(d).toLocaleDateString([],{day:'2-digit',month:'short',year:'numeric'})}
-function fmtTime(d){return new Date(d).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:true})}
+function dateText(t){return new Date(t).toLocaleDateString([],{day:'2-digit',month:'short',year:'numeric'})}
+function timeText(t){return new Date(t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:true})}
 function elapsed(){return Math.max(0,Date.now()-state.start)}
 function update(){
- let t=Math.floor(elapsed()/1000),d=Math.floor(t/86400),h=Math.floor(t%86400/3600),m=Math.floor(t%3600/60),s=t%60;
+ let total=Math.floor(elapsed()/1000),d=Math.floor(total/86400),h=Math.floor(total%86400/3600),m=Math.floor(total%3600/60),s=total%60;
  $('day').textContent=d;$('days').textContent=d;$('hours').textContent=h;$('mins').textContent=m;$('secs').textContent=s;
- $('startDate').textContent=fmtDate(state.start);$('startDay').textContent=new Date(state.start).toLocaleDateString([],{weekday:'long'});
- $('nowDate').textContent=fmtDate(Date.now());$('nowTime').textContent=fmtTime(Date.now());
- $('startShort').textContent=fmtDate(state.start);$('nowShort').textContent=fmtTime(Date.now());
- $('ring').style.setProperty('--p',Math.min(100,(d%30)/30*100)+'%');
+ $('startDate').textContent=dateText(state.start);$('startDay').textContent=new Date(state.start).toLocaleDateString([],{weekday:'long'});
+ $('nowDate').textContent=dateText(Date.now());$('nowTime').textContent=timeText(Date.now());
+ $('startChip').textContent=dateText(state.start);$('nowChip').textContent=timeText(Date.now());
+ let pct=Math.min(360,Math.max(8,(d%30)/30*360));$('ring').style.setProperty('--ring',pct+'deg');
  $('sCurrent').textContent=d+' Days';$('sBest').textContent=state.best+' Days';$('sReset').textContent=state.resets;
- $('statusText')?.textContent;
- buildCalendar(d);
+ buildCalendar();
 }
-function buildCalendar(d){
+function buildCalendar(){
  let c=$('calendar');if(!c)return;c.innerHTML='';
- let now=new Date(),y=now.getFullYear(),mo=now.getMonth(),first=new Date(y,mo,1).getDay(),days=new Date(y,mo+1,0).getDate();
- $('monthTitle').textContent=now.toLocaleDateString([],{month:'long',year:'numeric'});
- ['S','M','T','W','T','F','S'].forEach(x=>{let e=document.createElement('div');e.style.background='transparent';e.style.border='0';e.style.color='#667487';e.textContent=x;c.appendChild(e)});
+ let y=calDate.getFullYear(),mo=calDate.getMonth(),first=new Date(y,mo,1).getDay(),count=new Date(y,mo+1,0).getDate();
+ $('monthTitle').textContent=calDate.toLocaleDateString([],{month:'long',year:'numeric'});
+ ['S','M','T','W','T','F','S'].forEach(x=>{let e=document.createElement('div');e.className='head';e.textContent=x;c.appendChild(e)});
  for(let i=0;i<first;i++){let e=document.createElement('div');e.style.visibility='hidden';c.appendChild(e)}
- for(let n=1;n<=days;n++){let e=document.createElement('div');e.textContent=n;let dt=new Date(y,mo,n).getTime();if(dt>=state.start && dt<=Date.now())e.classList.add('done');if(n===now.getDate())e.classList.add('today');c.appendChild(e)}
+ for(let n=1;n<=count;n++){let e=document.createElement('div');e.textContent=n;let t=new Date(y,mo,n,23,59,59).getTime();if(t>=state.start&&t<=Date.now())e.classList.add('done');let now=new Date();if(y===now.getFullYear()&&mo===now.getMonth()&&n===now.getDate())e.classList.add('today');c.appendChild(e)}
 }
-function show(id){
- document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');
- document.querySelectorAll('.bottom button').forEach(x=>x.classList.remove('active'));
- let n={home:'nh',stats:'ns',tips:'nt',more:'nm'}[id];if(n)$(n).classList.add('active');update();
-}
+function changeMonth(n){calDate.setMonth(calDate.getMonth()+n);buildCalendar()}
+function show(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav').forEach(b=>b.classList.remove('active'));let map={home:'nh',stats:'ns',tips:'nt',more:'nm'};$(map[id]).classList.add('active');update();window.scrollTo({top:0,behavior:'smooth'})}
 function openStart(){
- $('mtitle').innerHTML='SET <span>START DATE</span>';$('mtext').textContent='Choose the exact date and time your streak began.';
- $('mextra')?.remove();
- let old=document.querySelector('.start-input-wrap');if(old)old.remove();
- let wrap=document.createElement('div');wrap.className='start-input-wrap';wrap.innerHTML='<input id="startInput" type="datetime-local" value="'+new Date(state.start-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16)+'"><button class="strong-btn" onclick="setStart()">SAVE START DATE</button>';
- document.querySelector('.modal').querySelector('.reason-box').replaceWith(wrap);$('modal').style.display='flex';
+ let modal=document.querySelector('.modal');modal.innerHTML='<button class="modal-close" onclick="closeModal()">×</button><div class="alarm-wrap"><svg class="icon"><use href="#i-calendar"/></svg></div><h2>SET <span>START DATE</span></h2><p class="modal-intro">Choose the exact date and time your streak began.</p><input id="startInput" type="datetime-local" value="'+new Date(state.start-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16)+'"><button class="primary" onclick="setStart()">SAVE START DATE</button>';$('modal').style.display='flex'
 }
 function setStart(){let v=$('startInput').value,t=new Date(v).getTime();if(!v||!isFinite(t)||t>Date.now()){toast('Choose a valid past date and time.');return}state.start=t;save();location.reload()}
-function closeModal(){$('modal').style.display='none';location.reload()}
+function closeModal(){location.reload()}
 function warning(){
  if(!state.warnings){toast('Warning popups are disabled.');return}
  state.warningCount=(state.warningCount||0)+1;if(state.warningCount>30)state.warningCount=1;save();
  $('mtitle').innerHTML=state.strong?"DON'T <span>DO IT!</span>":"STAY <span>FOCUSED!</span>";
- $('mtext').innerHTML='Stay Strong. This is just an urge,<br>it will pass.';
- $('warningCount').textContent='Warning '+state.warningCount+' / 30';$('modal').style.display='flex';
- let msgs=state.strong?["DON'T DO IT","STAY FOCUSED","KEEP GOING","MOVE ON","PROTECT YOUR STREAK","YOU CAN DO THIS"]:["KEEP GOING","STAY STRONG","ONE MORE MINUTE","YOU CAN DO THIS"];
- for(let i=0;i<30;i++)setTimeout(()=>pop(msgs[i%msgs.length]),i*90);
+ $('warningCount').textContent='WARNING '+state.warningCount+' / 30';$('modal').style.display='flex';
+ let msg=state.strong?['DON’T DO IT','STAY FOCUSED','KEEP GOING','PROTECT YOUR STREAK','MOVE FORWARD','YOU CAN DO THIS']:['KEEP GOING','STAY STRONG','ONE MORE MINUTE','YOU CAN DO THIS'];
+ for(let i=0;i<30;i++)setTimeout(()=>pop(msg[i%msg.length]),i*85)
 }
-function pop(t){let e=document.createElement('div');e.className='pop';e.textContent=t;e.style.left=(Math.random()*72+7)+'vw';e.style.top=(Math.random()*68+10)+'vh';document.body.appendChild(e);setTimeout(()=>e.remove(),4000)}
+function pop(t){let e=document.createElement('div');e.className='pop';e.textContent=t;e.style.left=(Math.random()*70+8)+'vw';e.style.top=(Math.random()*65+10)+'vh';document.body.appendChild(e);setTimeout(()=>e.remove(),3800)}
 function toggle(k){state[k]=!state[k];$(k==='warnings'?'wt':'st').classList.toggle('on',state[k]);save()}
-function resetAll(){if(confirm('Reset your streak and start again now?')){let d=Math.floor(elapsed()/86400000);state.best=Math.max(state.best,d);state.resets++;state.start=Date.now();state.warningCount=0;save();update();toast('Streak reset. New streak started.')}}
+function resetAll(){if(confirm('Reset your current streak? This cannot be undone.')){let d=Math.floor(elapsed()/86400000);state.best=Math.max(state.best,d);state.resets++;state.start=Date.now();state.warningCount=0;save();update();toast('New streak started.')}}
 function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.download='focus-mode-data.json';a.click()}
-function importData(f){if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.start)throw 0;state={...state,...x};save();location.reload()}catch(e){toast('Invalid Focus Mode data.')}};r.readAsText(f)}
-function toast(t){$('toast').textContent=t;$('toast').style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>$('toast').style.display='none',2200)}
-$('wt').classList.toggle('on',state.warnings);$('st').classList.toggle('on',state.strong);show('home');setInterval(update,1000);
+function importData(f){if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.start)throw 0;state={...state,...x};save();location.reload()}catch(e){toast('Invalid backup file.')}};r.readAsText(f)}
+function toast(t){$('toast').textContent=t;$('toast').style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').style.display='none',2200)}
+$('wt').classList.toggle('on',state.warnings);$('st').classList.toggle('on',state.strong);update();
+setInterval(update,1000);
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body>
