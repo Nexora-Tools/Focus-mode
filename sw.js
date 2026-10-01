@@ -8,7 +8,9 @@ self.addEventListener("install", event => {
     caches.open(CACHE).then(cache =>
       cache.addAll([
         "./",
-        "./manifest.webmanifest"
+"./manifest.webmanifest",
+"./public/icons/icon-192.png",
+"./public/icons/icon-512.png"
       ])
     )
   );
