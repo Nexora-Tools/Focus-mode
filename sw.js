@@ -1,4 +1,5 @@
-const CACHE = "focus-mode-v6";
+
+const CACHE = "focus-mode-v7";
 
 self.addEventListener("install", event => {
   self.skipWaiting();
