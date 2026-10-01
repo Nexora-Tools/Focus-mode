@@ -1,10 +1,23 @@
 {
-  "name":"Focus Mode",
-  "short_name":"Focus Mode",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#080914",
-  "theme_color":"#080914",
-  "description":"A simple streak and urge-warning PWA.",
-  "icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+  "name": "Focus Mode",
+  "short_name": "Focus",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#080914",
+  "theme_color": "#080914",
+  "description": "A simple streak and urge-warning PWA.",
+  "icons": [
+    {
+      "src": "public/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "public/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
