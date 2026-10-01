@@ -278,4 +278,11 @@ function syncSettings(){document.querySelectorAll('.setting').forEach(el=>{let t
 if(localStorage.getItem('warningEnabled')===null)localStorage.setItem('warningEnabled','1');if(localStorage.getItem('dark')===null)localStorage.setItem('dark','1');if(localStorage.getItem('sound')===null)localStorage.setItem('sound','1');
 tick();syncSettings();showStorageNotice();setInterval(tick,1000);if(!getStart())setTimeout(openDateModal,350);
 </script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js');
+  });
+}
+</script>
 </body></html>
