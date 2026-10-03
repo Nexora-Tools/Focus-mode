@@ -1,2 +1,1 @@
-# website link - 
-https://nexora-tools.github.io/Focus-mode/
+#Focus on your self
