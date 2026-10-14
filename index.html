@@ -91,6 +91,82 @@
 
 
 <section id="tasks" class="screen">
+  <div class="sectionTitle"><h2>🎯 Focus Tasks</h2><div style="display:flex;gap:6px"><button class="taskAdd" style="background:#26394d" onclick="repeatYesterdayTasks()">Repeat Yesterday</button><button class="taskAdd" onclick="openTaskEditor()">＋ Add Task</button></div></div>
+  <p id="taskDateLabel" style="font-size:10px;color:#8493a4;margin-top:-3px">Your tasks for today</p>
+  <div class="card" style="margin-top:12px">
+    <div class="taskProgress"><div><span id="taskProgressText">0 of 0 completed</span><b id="taskProgressPct">0%</b></div><div class="taskProgressTrack"><i id="taskProgressBar"></i></div></div>
+    <div id="taskList" class="taskList"></div>
+    <details class="taskHistory" id="upcomingTasksWrap"><summary>Upcoming tasks</summary><div id="upcomingTasksList"></div></details>
+    <div id="taskCongrats" class="taskCongrats" hidden>🎉 Cong48px,100%);max-height:calc(100vh - 36px);overflow:auto;background:#08121d;border:1px solid #26384b;border-radius:22px;box-shadow:0 25px 70px #000b;padding:16px;animation:menuIn .18s ease}
+@keyframes menuIn{from{transform:translateY(-10px);opacity:0}to{transform:none;opacity:1}}
+.menuHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.menuHead h2{font-size:18px;margin:0}.menuHead p{font-size:8px;color:#8290a0;margin:3px 0 0}
+.menuClose{width:38px;height:38px;border:1px solid #2b3d50;border-radius:11px;background:#111e2c;color:#fff;font-size:20px}
+.profileBox{background:linear-gradient(135deg,#101f2f,#0b1520);border:1px solid #2a4057;border-radius:17px;padding:14px;margin-bottom:9px}
+.profileRow{display:flex;align-items:center;gap:11px}
+.avatar{width:45px;height:45px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#ff3347,#8a4dff);font-weight:900;font-size:17px}
+.profileName{font-size:13px;font-weight:850}.profileSub{font-size:8px;color:#8290a0;margin-top:3px}
+.nameRow{display:flex;gap:7px;margin-top:10px}.nameRow input{flex:1;min-width:0;background:#07101a;border:1px solid #30465d;border-radius:10px;color:#fff;padding:10px;font-size:10px;outline:none}.nameRow button{border:0;border-radius:10px;background:#ff3347;color:#fff;padding:0 13px;font-size:9px;font-weight:850}
+.menuGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:9px}
+.menuItem{border:1px solid #24374b;border-radius:14px;background:#0d1926;color:#e7edf5;text-align:left;padding:12px;min-height:72px}
+.menuItem .mi{font-size:18px;margin-bottom:7px}.menuItem b{font-size:10px}.menuItem small{display:block;color:#778697;font-size:8px;margin-top:3px;line-height:1.3}
+.menuItem:active{transform:scale(.985);background:#111f2e}
+.menuLabel{font-size:8px;letter-spacing:1px;color:#66778a;font-weight:850;margin:13px 2px 6px}
+.menuStats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:9px}.menuStats div{background:#0b1622;border:1px solid #223448;border-radius:12px;text-align:center;padding:10px 4px}.menuStats b{font-size:15px}.menuStats span{display:block;color:#718092;font-size:7px;margin-top:3px}
+.achPage{display:none;padding:0 16px 90px}.achPage.active{display:block}
+.achHero{background:linear-gradient(135deg,#251226,#11192a);border:1px solid #4b2a43;border-radius:18px;padding:16px;margin-bottom:9px}
+.achHeroTop{display:flex;justify-content:space-between;align-items:flex-start}.achHero small{color:#ff8190;font-size:8px}.achScore{font-size:30px;font-weight:900;margin-top:3px}.achLevel{background:#171d31;border:1px solid #604c94;border-radius:12px;padding:9px 10px;color:#bda8ff;font-size:9px;font-weight:850}
+.achBar{height:6px;border-radius:99px;background:#202b3a;margin-top:11px;overflow:hidden}.achBar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff3347,#8a4dff);border-radius:99px}
+.achList{display:grid;grid-template-columns:1fr 1fr;gap:7px}.achievement{background:#0c1622;border:1px solid #1f3042;border-radius:14px;padding:12px;min-height:116px;position:relative}.achievement.unlocked{border-color:#245a47;background:#0b1918}.achievement .badge{font-size:22px}.achievement b{display:block;font-size:10px;margin-top:6px}.achievement p{font-size:8px;color:#7f8d9d;line-height:1.35;margin:4px 0}.achievement .state{position:absolute;right:9px;top:9px;font-size:9px;color:#5d6d80}.achievement.unlocked .state{color:#16d88a}
+.backTop{display:flex;align-items:center;gap:9px;padding:12px 0 8px}.backTop button{border:1px solid #26384b;background:#0c1724;color:#fff;border-radius:10px;width:35px;height:35px}.backTop b{font-size:16px}.backTop span{display:block;font-size:8px;color:#7f8d9d;margin-top:2px}
+@media(max-width:350px){.achList{grid-template-columns:1fr}.menuGrid{grid-template-columns:1fr 1fr}}
+
+
+/* Achievement-only refinement — base design unchanged */
+.achPage .achievement{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.achPage .achievement.unlocked{box-shadow:0 8px 24px rgba(255,51,71,.08)}
+.achPage .achievement.unlocked:hover{transform:translateY(-2px)}
+.achievement .rankNote{font-size:7px;letter-spacing:.5px;color:#69798b;margin-top:7px;font-weight:800}
+.achievement.unlocked .rankNote{color:#ff7180}
+.achievement .progressNote{font-size:7px;color:#58687a;margin-top:5px}
+.achMotivation{background:#0c1723;border:1px solid #23374a;border-radius:14px;padding:12px;margin-bottom:9px}
+.achMotivation b{font-size:10px}.achMotivation p{font-size:8px;color:#8190a0;margin:5px 0 0;line-height:1.45}
+
+
+/* Focus Tasks: added without changing the existing layout */
+.focusTasks{margin-top:12px;padding:14px;background:rgba(12,22,34,.96)}
+.taskHead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.taskHead h2{font-size:15px;margin:0}.taskHead p{font-size:9px;color:#8493a4;margin:5px 0 0}
+.taskAdd{border:0;border-radius:10px;background:var(--red);color:white;padding:10px 12px;font-weight:800;font-size:10px;white-space:nowrap}
+.taskProgress{margin:15px 0 10px}.taskProgress>div:first-child{display:flex;justify-content:space-between;font-size:9px;color:#a0adbb;margin-bottom:7px}.taskProgress b{color:#f5f7fb}
+.taskProgressTrack{height:6px;background:#202d3c;border-radius:99px;overflow:hidden}.taskProgressTrack i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff3347,#16d88a);transition:width .2s}
+.taskList{display:grid;gap:8px}.taskRow{display:flex;align-items:flex-start;gap:9px;padding:11px;background:#08121d;border:1px solid #203044;border-radius:12px;min-width:0}
+.taskCheck{width:19px;height:19px;accent-color:#16d88a;flex:0 0 auto;margin-top:2px}
+.taskBody{flex:1;min-width:0}.taskName{font-size:11px;font-weight:750;overflow-wrap:anywhere;line-height:1.4}.taskDone .taskName{text-decoration:line-through;color:#718092}
+.taskMeta{font-size:8px;color:#8493a4;margin-top:5px}.taskStatus{display:inline-block;margin-top:6px;font-size:8px;font-weight:900;letter-spacing:.5px;color:#16d88a}
+.taskStatus.missed{color:#ff4659}.taskStatus.pending{color:#ffbd55}
+.taskActions{display:flex;gap:5px;flex:0 0 auto}.taskActions button{border:1px solid #2b3d50;background:#111e2c;color:#dce5ef;border-radius:8px;padding:7px;font-size:9px}
+.taskEmpty{padding:18px 8px;text-align:center;color:#7f8d9d;font-size:10px;border:1px dashed #2b3b4e;border-radius:12px}
+.taskCongrats{margin-top:10px;border:1px solid #176849;background:#0c241d;color:#7df0bb;border-radius:12px;padding:13px;text-align:center;font-size:11px;font-weight:850;line-height:1.5}
+.taskHistory{margin-top:13px;border-top:1px solid #203044;padding-top:10px;color:#a9b5c3;font-size:10px}.taskHistory summary{cursor:pointer}.taskHistory #taskHistoryList{display:grid;gap:7px;margin-top:10px}
+.taskHistory .taskRow{opacity:.85}.taskFormLabel{display:block;text-align:left;color:#aab7c6;font-size:10px;margin:4px 0}
+.taskFormGrid{display:grid;grid-template-columns:1.2fr 1fr;gap:8px}.taskModal{align-items:center}.taskModalCard{text-align:left;max-height:90vh;overflow:auto}.taskModalCard h2{text-align:left}.taskModalCard .dateInput{margin:4px 0 12px;min-width:0}.taskModalCard .modalBtns{margin-top:8px}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><button class="iconbtn menu-open" onclick="openMenu()" aria-label="Open menu">☰</button><div class="brand"><div class="crown">♛</div><h1>FOCUS <span>MODE</span></h1><p>A BETTER YOU EVERY DAY</p></div><button class="iconbtn" onclick="go('more')" aria-label="Settings">⚙</button></header>
+
+<section id="home" class="screen active">
+<div id="storageNotice" class="card" style="display:none;border-color:#8a4dff;color:#cfd8e3;font-size:10px;line-height:1.45">For reliable streak saving, install this app from its web address. A downloaded <b>file://</b> copy may not preserve browser storage after reopening.</div>
+<div class="hero"><div class="heroContent"><div class="ring"><div class="ringText"><div class="fire">🔥</div><small>Day</small><strong id="day">0</strong><em id="ringNext" style="font-size:10px;line-height:1.25">Set start date</em></div><div class="ringMeta"><b id="ringPercent">0%</b> of today · <span id="ringRemain">24:00:00</span> left</div></div><div class="heroTitle"><b>Keep Going</b><span>Discipline Today, Freedom Tomorrow</span></div></div></div>
+<div class="dateGrid"><div class="mini"><label>Start Date</label><p id="startDate">Not started</p><button class="dateAction" onclick="openDateModal()">Set / Change Date</button></div><div class="mini"><label style="color:#8e7cff">Current Date & Time</label><p id="now">—</p></div></div>
+<div class="stats4"><div class="stat"><div class="ico">📅</div><b id="days">0</b><span>Days</span></div><div class="stat"><div class="ico">🕒</div><b id="hours">0</b><span>Hours</span></div><div class="stat"><div class="ico">⏱️</div><b id="mins">0</b><span>Minutes</span></div><div class="stat"><div class="ico">⚡</div><b id="secs">0</b><span>Seconds</span></div></div>
+<button class="urge" onclick="go('warning')">▶ &nbsp; I'M HAVING AN URGE<br><small>⚠ Get Motivated Now</small></button>
+</section>
+
+
+<section id="tasks" class="screen">
   <div class="sectionTitle"><h2>🎯 Focus Tasks</h2><button class="taskAdd" onclick="openTaskEditor()">＋ Add Task</button></div>
   <p id="taskDateLabel" style="font-size:10px;color:#8493a4;margin-top:-3px">Your tasks for today</p>
   <div class="card" style="margin-top:12px">
