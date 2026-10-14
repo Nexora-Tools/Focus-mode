@@ -91,7 +91,7 @@
 
 
 <section id="tasks" class="screen">
-  <div class="sectionTitle"><h2>🎯 Focus Tasks</h2><div style="display:flex;gap:6px"><button class="taskAdd" style="background:#26394d" onclick="repeatYesterdayTasks()">Repeat Yesterday</button><button class="taskAdd" onclick="openTaskEditor()">＋ Add Task</button></div></div>
+  <div class="sectionTitle"><h2>🎯 Focus Tasks</h2><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="taskAdd" style="background:#26394d" onclick="repeatYesterdayTasks()">Repeat Yesterday</button><button class="taskAdd" style="background:#5a3440" onclick="takeBreakDay()">Break Today</button><button class="taskAdd" onclick="openTaskEditor()">＋ Add Task</button></div></div>
   <p id="taskDateLabel" style="font-size:10px;color:#8493a4;margin-top:-3px">Your tasks for today</p>
   <div class="card" style="margin-top:12px">
     <div class="taskProgress"><div><span id="taskProgressText">0 of 0 completed</span><b id="taskProgressPct">0%</b></div><div class="taskProgressTrack"><i id="taskProgressBar"></i></div></div>
@@ -320,7 +320,11 @@ if(localStorage.getItem('warningEnabled')===null)localStorage.setItem('warningEn
 tick();syncSettings();showStorageNotice();setInterval(tick,1000);if(!getStart())setTimeout(openDateModal,350);
 
 const TASKS_KEY='focusModeTasksV1';
+const TASK_BREAKS_KEY='focusModeTaskBreakDaysV1';
 let editingTaskId=null;
+function readBreakDays(){try{const v=JSON.parse(localStorage.getItem(TASK_BREAKS_KEY)||'[]');return Array.isArray(v)?v:[]}catch(e){return []}}
+function takeBreakDay(){const today=dateKey();if(!confirm('Do you want to take a break today? All today’s tasks will be hidden except Namaz tasks.'))return;const days=readBreakDays();if(!days.includes(today))days.push(today);localStorage.setItem(TASK_BREAKS_KEY,JSON.stringify(days));renderTasks();alert('Break day enabled. Namaz tasks will remain visible.')}
+
 function readTasks(){try{const v=JSON.parse(localStorage.getItem(TASKS_KEY)||'[]');return Array.isArray(v)?v:[]}catch(e){return []}}
 function writeTasks(tasks){localStorage.setItem(TASKS_KEY,JSON.stringify(tasks))}
 function dateKey(d=new Date()){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
@@ -371,14 +375,17 @@ function taskRowHTML(t,history=false){
 }
 function renderTasks(){
  syncRecurringTasks();const tasks=readTasks(),today=dateKey(),now=Date.now();
- const todayTasks=tasks.filter(t=>t.date===today).sort((a,b)=>taskDateTime(a)-taskDateTime(b));
- const futureTasks=tasks.filter(t=>t.date>today).sort((a,b)=>taskDateTime(a)-taskDateTime(b));
+ const allTodayTasks=tasks.filter(t=>t.date===today).sort((a,b)=>taskDateTime(a)-taskDateTime(b));
+ const breakDay=readBreakDays().includes(today);
+ const todayTasks=breakDay?allTodayTasks.filter(t=>/namaz/i.test(t.name)):allTodayTasks;
+ // Recurring instances are generated internally for scheduling; show the recurring task once, not hundreds of future copies.
+ const futureTasks=tasks.filter(t=>t.date>today&&!t.generatedFrom).sort((a,b)=>taskDateTime(a)-taskDateTime(b));
  const oldTasks=tasks.filter(t=>t.date<today).sort((a,b)=>taskDateTime(b)-taskDateTime(a));
  const list=document.getElementById('taskList'),history=document.getElementById('taskHistoryList');
- document.getElementById('taskDateLabel').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric',year:'numeric'});
+ document.getElementById('taskDateLabel').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric',year:'numeric'})+(breakDay?' · Break day':'');
  const completed=todayTasks.filter(t=>t.completed).length,total=todayTasks.length,pct=total?Math.round(completed/total*100):0;
  document.getElementById('taskProgressText').textContent=`${completed} of ${total} completed`;document.getElementById('taskProgressPct').textContent=pct+'%';document.getElementById('taskProgressBar').style.width=pct+'%';
- list.innerHTML=todayTasks.length?todayTasks.map(t=>taskRowHTML(t)).join(''):'<div class="taskEmpty">No tasks for today yet. Tap “＋ Add Task” to plan your day.</div>';
+ list.innerHTML=todayTasks.length?todayTasks.map(t=>taskRowHTML(t)).join(''):(breakDay?'<div class="taskEmpty">Break day enabled. No Namaz tasks scheduled for today.</div>':'<div class="taskEmpty">No tasks for today yet. Tap “＋ Add Task” to plan your day.</div>');
  document.getElementById('upcomingTasksList').innerHTML=futureTasks.length?futureTasks.map(t=>taskRowHTML(t)).join(''):'<div class="taskEmpty">No upcoming tasks scheduled.</div>';
  document.getElementById('taskCongrats').hidden=!(total>0&&completed===total);
  history.innerHTML=oldTasks.length?oldTasks.map(t=>taskRowHTML(t,true)).join(''):'<div class="taskEmpty">No previous tasks in your history.</div>';
@@ -393,4 +400,4 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-</body></html
+</body></html>
